@@ -51,7 +51,7 @@ class Task(models.Model):
         on_delete=models.SET_NULL,
         null=True,
     )
-    assignees = models.ManyToManyField(Worker, related_name="tasks",)
+    assignees = models.ManyToManyField(Worker, related_name="tasks", blank=True)
 
     def __str__(self: Task) -> str:
         return (f"{self.name} (Type: {self.task_type}, "
