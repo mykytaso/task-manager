@@ -26,16 +26,16 @@ class Worker(AbstractUser):
     )
 
     def __str__(self: Worker) -> str:
-        return f'{self.username} – {self.position}'
+        return f"{self.username} – {self.position}"
 
 
 class Task(models.Model):
     PRIORITY_CHOICES = (
-        ('Critical', 'Critical'),
-        ('High', 'High'),
-        ('Medium', 'Medium'),
-        ('Low', 'Low'),
-        ('Optional', 'Optional'),
+        ("Critical", "Critical"),
+        ("High", "High"),
+        ("Medium", "Medium"),
+        ("Low", "Low"),
+        ("Optional", "Optional"),
     )
 
     name = models.CharField(max_length=255, unique=True,)
@@ -51,8 +51,8 @@ class Task(models.Model):
         on_delete=models.SET_NULL,
         null=True,
     )
-    assignees = models.ManyToManyField(Worker, related_name='tasks',)
+    assignees = models.ManyToManyField(Worker, related_name="tasks",)
 
     def __str__(self: Task) -> str:
-        return (f'{self.name} (Type: {self.task_type}, '
-                f'Priority: {self.priority}, Deadline: {self.deadline})')
+        return (f"{self.name} (Type: {self.task_type}, "
+                f"Priority: {self.priority}, Deadline: {self.deadline})")
