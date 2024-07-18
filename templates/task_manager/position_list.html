@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>
+    Positions
+    <a href="{% url 'task_manager:index' %}" class="btn btn-primary link-to-page">
+      Create
+    </a>
+  </h1>
+
+  {% if position_list %}
+  <table class="table">
+    <tr>
+      <th>ID</th>
+      <th>Position</th>
+    </tr>
+  {% for position in position_list %}
+    <tr>
+      <td>{{ position.id }}</td>
+      <td>{{ position.name }}</td>
+    </tr>
+  {% endfor %}
+
+  </table>
+  {% else %}
+    <p>There are no positions in the Task Manager</p>
+  {% endif %}
+{% endblock %}

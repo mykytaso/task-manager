@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Username: {{ worker.username }}</h1>
+
+  <p><strong>First name:</strong> {{ worker.first_name }}</p>
+  <p><strong>Last name:</strong> {{ worker.last_name }}</p>
+  <p><strong>License number:</strong> {{ worker.position }}</p>
+
+  <div class="ml-3">
+    <h4>
+      Is working on task{{ worker.tasks.count|pluralize }}
+    </h4>
+  
+    {% for task in worker.tasks.all %}
+        <hr>
+        <p><a href="{% url "task_manager:task-detail" pk=task.id %}">{{ task.name }}</a></p>
+
+    {% empty %}
+      <p>No Tasks!</p>
+    {% endfor %}
+  </div>
+{% endblock %}

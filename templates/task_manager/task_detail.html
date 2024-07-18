@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>
+    Task: {{ task.name }}
+  </h1>
+  
+  <p><strong>ID:</strong> {{ task.id }}</p>
+  <p><strong>Type:</strong> {{ task.task_type }}</p>
+  <p><strong>Description:</strong> {{ task.description }}</p>
+  <p><strong>Deadline:</strong> {{ task.deadline }}</p>
+  <p><strong>Priority:</strong> {{ task.priority }}</p>
+  <p><strong>Is Completed:</strong> {{ task.is_completed }}</p>
+  
+  <div class="ml-3">
+    <h4>
+      {% if task.assignees.count == 1 %}
+        Is working on this task:
+      {% elif task.assignees.count > 1 %}
+        Are working on this task:
+      {% endif %}
+    </h4>
+
+    {% for worker in task.assignees.all %}
+        <hr>
+        <p>
+          <a href="{% url "task_manager:worker-detail" pk=worker.id %}">{{ worker.username }}</a>
+        </p>
+
+    {% empty %}
+      <p>No one is working on this task right now.</p>
+    {% endfor %}
+  </div>
+{% endblock %}
