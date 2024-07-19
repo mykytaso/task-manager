@@ -3,7 +3,7 @@
 {% block content %}
   <h1>
     Positions
-    <a href="{% url 'task_manager:index' %}" class="btn btn-primary link-to-page">
+    <a href="{% url 'task_manager:position-create' %}" class="btn btn-primary link-to-page">
       Create
     </a>
   </h1>
@@ -13,11 +13,15 @@
     <tr>
       <th>ID</th>
       <th>Position</th>
+      <th></th>
+      <th></th>
     </tr>
   {% for position in position_list %}
     <tr>
       <td>{{ position.id }}</td>
       <td>{{ position.name }}</td>
+      <td><a href="{% url "task_manager:position-update" pk=position.id %}">Update</a></td>
+      <td><a href="{% url "task_manager:position-delete" pk=position.id %}">Delete</a></td>
     </tr>
   {% endfor %}
 
