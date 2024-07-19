@@ -39,6 +39,7 @@ class TaskDetailView(generic.DetailView):
 
 class TaskTypeListView(generic.ListView):
     model = TaskType
+    ordering = "name"
 
 
 class TaskTypeCreateView(generic.edit.CreateView):
@@ -60,6 +61,7 @@ class TaskTypeDeleteView(generic.edit.DeleteView):
 
 class PositionListView(generic.ListView):
     model = Position
+    ordering = "name"
 
 
 class PositionCreateView(generic.CreateView):
