@@ -41,6 +41,23 @@ class TaskTypeListView(generic.ListView):
     model = TaskType
 
 
+class TaskTypeCreateView(generic.edit.CreateView):
+    model = TaskType
+    fields = "__all__"
+    success_url = reverse_lazy("task_manager:tasktype-list")
+
+
+class TaskTypeUpdateView(generic.edit.UpdateView):
+    model = TaskType
+    fields = "__all__"
+    success_url = reverse_lazy("task_manager:tasktype-list")
+
+
+class TaskTypeDeleteView(generic.edit.DeleteView):
+    model = TaskType
+    success_url = reverse_lazy("task_manager:tasktype-list")
+
+
 class PositionListView(generic.ListView):
     model = Position
 
