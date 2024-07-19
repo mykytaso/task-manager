@@ -3,7 +3,7 @@
 {% block content %}
   <h1>
     Tasks
-    <a href="{% url 'task_manager:index' %}" class="btn btn-primary link-to-page">
+    <a href="{% url 'task_manager:task-create' %}" class="btn btn-primary link-to-page">
       Create
     </a>
   </h1>
@@ -16,6 +16,7 @@
       <th>Is Completed</th>
       <th>Priority</th>
       <th>Type</th>
+      <th>Number of Workers</th>
     </tr>
   {% for task in task_list %}
     <tr>
@@ -24,6 +25,7 @@
       <td>{{ task.is_completed }}</td>
       <td>{{ task.priority }}</td>
       <td>{{ task.task_type }}</td>
+      <td>{{ task.assignees.count }}</td>
     </tr>
   {% endfor %}
 
