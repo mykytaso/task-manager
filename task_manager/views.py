@@ -44,6 +44,17 @@ class TaskCreateView(generic.CreateView):
     success_url = reverse_lazy("task_manager:task-list")
 
 
+class TaskUpdateView(generic.UpdateView):
+    model = Task
+    form_class = TaskForm
+    success_url = reverse_lazy("task_manager:task-list")
+
+
+class TaskDeleteView(generic.DeleteView):
+    model = Task
+    success_url = reverse_lazy("task_manager:task-list")
+
+
 class TaskTypeListView(generic.ListView):
     model = TaskType
     ordering = "name"
