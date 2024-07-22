@@ -44,10 +44,18 @@ class Worker(AbstractUser):
 
 
 class Task(models.Model):
+    IS_COMPLETED_CHOICES = (
+        (True, "Yes"),
+        (False, "No"),
+    )
+
     name = models.CharField(max_length=255, unique=True,)
     description = models.TextField(blank=True, null=True,)
     deadline = models.DateField(blank=True, null=True)
-    is_completed = models.BooleanField(default=False,)
+    is_completed = models.BooleanField(
+        default=False,
+        choices=IS_COMPLETED_CHOICES,
+    )
     priority = models.ForeignKey(
         TaskPriority,
         on_delete=models.CASCADE,
