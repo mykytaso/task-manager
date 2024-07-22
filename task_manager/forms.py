@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from datetime import date
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 
@@ -16,7 +17,8 @@ class TaskForm(forms.ModelForm):
     )
 
     deadline = forms.DateField(
-        widget=forms.DateInput(attrs={"type": "date"})
+        widget=forms.DateInput(attrs={"type": "date"}),
+        initial=date.today(),
     )
 
     class Meta:
