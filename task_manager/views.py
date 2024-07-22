@@ -36,7 +36,7 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
         return context
 
     def get_queryset(self):
-        queryset = Worker.objects.all()
+        queryset = Worker.objects.select_related("position")
 
         form = WorkerSearchForm(self.request.GET)
         if form.is_valid():
