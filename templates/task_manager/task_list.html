@@ -17,6 +17,7 @@
       <th>Priority</th>
       <th>Type</th>
       <th>Number of Workers</th>
+      <th>Is Completed</th>
       <th></th>
       <th></th>
     </tr>
@@ -28,8 +29,13 @@
       <td>{{ task.priority }}</td>
       <td>{{ task.task_type }}</td>
       <td>{{ task.assignees.count }}</td>
+      <td>
+        {% if task.is_completed %}
+          <div style="color: green">✅</div>
+        {% endif %}
+      </td>
       <td><a href="{% url "task_manager:task-update" pk=task.id %}">Update</a></td>
-      <td><a href="{% url "task_manager:task-delete" pk=task.id %}">Delete</a></td>
+      <td><a style="color: red" href="{% url "task_manager:task-delete" pk=task.id %}">Delete</a></td>
     </tr>
   {% endfor %}
 
