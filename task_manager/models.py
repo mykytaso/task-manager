@@ -19,6 +19,17 @@ class TaskType(models.Model):
         return self.name
 
 
+class TaskPriority(models.Model):
+    importance = models.PositiveSmallIntegerField(unique=True,)
+    name = models.CharField(max_length=255, unique=True,)
+
+    def __str__(self: TaskPriority) -> str:
+        return self.name
+
+    class Meta:
+        ordering = ["importance"]
+
+
 class Worker(AbstractUser):
     position = models.ForeignKey(
         Position,
@@ -33,21 +44,13 @@ class Worker(AbstractUser):
 
 
 class Task(models.Model):
-    PRIORITY_CHOICES = (
-        ("Critical", "Critical"),
-        ("High", "High"),
-        ("Medium", "Medium"),
-        ("Low", "Low"),
-        ("Optional", "Optional"),
-    )
-
     name = models.CharField(max_length=255, unique=True,)
     description = models.TextField(blank=True, null=True,)
     deadline = models.DateField(blank=True, null=True)
     is_completed = models.BooleanField(default=False,)
-    priority = models.CharField(
-        max_length=255,
-        choices=PRIORITY_CHOICES,
+    priority = models.ForeignKey(
+        TaskPriority,
+        on_delete=models.CASCADE,
     )
     task_type = models.ForeignKey(
         TaskType,

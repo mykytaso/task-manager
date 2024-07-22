@@ -1,7 +1,13 @@
 from django.contrib import admin
-
-from task_manager.models import Position, Task, TaskType, Worker
 from django.contrib.auth.admin import UserAdmin
+
+from task_manager.models import (
+    Position,
+    Task,
+    TaskPriority,
+    TaskType,
+    Worker,
+)
 
 
 @admin.register(Position)
@@ -24,6 +30,11 @@ class TaskAdmin(admin.ModelAdmin):
 @admin.register(TaskType)
 class TaskTypeAdmin(admin.ModelAdmin):
     list_display = ("name",)
+
+
+@admin.register(TaskPriority)
+class TaskTypeAdmin(admin.ModelAdmin):
+    list_display = ("importance", "name",)
 
 
 @admin.register(Worker)
