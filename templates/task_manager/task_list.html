@@ -47,4 +47,9 @@
   {% else %}
     <p>There are no tasks in the Task Manager</p>
   {% endif %}
+  
+  {% block pagination %}
+      {% include "includes/pagination.html" %}
+  {% endblock %}
+  
 {% endblock %}

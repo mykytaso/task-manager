@@ -26,6 +26,7 @@ def index(request):
 
 class WorkerListView(LoginRequiredMixin, generic.ListView):
     model = Worker
+    paginate_by = 5
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(WorkerListView, self).get_context_data(**kwargs)
@@ -50,6 +51,7 @@ class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
 
 class TaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
+    paginate_by = 5
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(TaskListView, self).get_context_data(**kwargs)
