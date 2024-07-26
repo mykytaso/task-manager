@@ -4,3 +4,4 @@
 __pycache__/
 db.sqlite3
 .flake8
+bootstrap-5.3.3-dist
