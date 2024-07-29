@@ -1,32 +1,43 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
-    Positions
-    <a href="{% url 'task_manager:position-create' %}" class="btn btn-primary link-to-page">
-      Create
-    </a>
-  </h1>
 
-  {% if position_list %}
-  <table class="table">
-    <tr>
-      <th>ID</th>
-      <th>Position</th>
-      <th></th>
-      <th></th>
-    </tr>
-  {% for position in position_list %}
-    <tr>
-      <td>{{ position.id }}</td>
-      <td>{{ position.name }}</td>
-      <td><a href="{% url "task_manager:position-update" pk=position.id %}">Update</a></td>
-      <td><a href="{% url "task_manager:position-delete" pk=position.id %}">Delete</a></td>
-    </tr>
-  {% endfor %}
-
-  </table>
-  {% else %}
-    <p>There are no positions in the Task Manager</p>
-  {% endif %}
+  <div class="row align-items-center ">
+    <div class="col-auto fs-3 fw-bolder ">
+      Positions
+    </div>
+    <div class="col-auto p-0">
+      <a href="{% url 'task_manager:position-create' %}" class="fs-3">
+        <i class="bi bi-plus-square-fill"></i>
+      </a>
+    </div>
+  </div>
+  
+  
+  <div class="row py-5">
+    <div class="col">
+      {% if position_list %}
+        <table class="table">
+          <tr>
+            <th>ID</th>
+            <th>Position</th>
+            <th></th>
+            <th></th>
+          </tr>
+        
+          {% for position in position_list %}
+            <tr>
+              <td>{{ position.id }}</td>
+              <td>{{ position.name }}</td>
+              <td><a href="{% url "task_manager:position-update" pk=position.id %}">Update</a></td>
+              <td><a href="{% url "task_manager:position-delete" pk=position.id %}">Delete</a></td>
+            </tr>
+          {% endfor %}
+        
+        </table>
+      {% else %}
+        <p>There are no positions in the Task Manager</p>
+      {% endif %}
+    </div>
+  </div>
 {% endblock %}

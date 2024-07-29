@@ -1,8 +1,6 @@
-{% load crispy_forms_filters %}
-
-<br>
-<form method="get" action="" class="form-inline">
-  {{ search_form|crispy}}
-  <input style="margin-left: 10px" class="btn btn-primary" type="submit" value="Search">
+<form method="get" action="" class="input-group" >
+  {% for input_field in search_form %}
+    {{ input_field }}
+  {% endfor %}
+  <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
 </form>
-<br>
