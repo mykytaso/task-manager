@@ -1,48 +1,69 @@
 {% extends "base.html" %}
+{% load query_transform %}
 
 {% block content %}
   
-  <div class="row m-0 pb-4 align-items-center">
-    <div class="col-auto fs-3 fw-bolder p-0">
-      Workers
-    </div>
-    <div class="col-auto ms-auto p-0">
-      {% block search %}
-        {% include "includes/search.html" %}
-      {% endblock %}
+  
+  <div class="container mt-5 mb-4">
+    <div class="row align-items-center">
+      <div class="col-auto fs-3 fw-bolder p-0">
+        Workers
+      </div>
+    
+      <div class="col-auto ms-auto p-0">
+        {% block search %}
+          {% include "includes/search.html" %}
+        {% endblock %}
+      </div>
     </div>
   </div>
   
-  <div class="p-3 mb-3 bg-light rounded">
-  {% if worker_list %}
-  <table class="table">
-    <tr>
-      <th>ID</th>
-      <th>Username</th>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Position</th>
-      <th>Assigned Tasks</th>
-    </tr>
-  {% for worker in worker_list %}
-    <tr>
-      <td>{{ worker.id }}</td>
-      <td><a href="{% url "task_manager:worker-detail" pk=worker.id %}">{{ worker.username }}</a></td>
-      <td>{{ worker.first_name }}</td>
-      <td>{{ worker.last_name }}</td>
-      <td>{{ worker.position.name }}</td>
-      <td>{{ worker.tasks.count }}</td>
-    </tr>
-  {% endfor %}
-  
-  </table>
-  {% else %}
-    <p>There are no workers in the Task Manager</p>
-  {% endif %}
-  
-  {% block pagination %}
-      {% include "includes/pagination.html" %}
-  {% endblock %}
+  <div class="container">
+    {% if worker_list %}
+      <div class="row">
+        <div class="col border bg-white rounded-3">
+          
+          <div class="table-responsive my-3">
+            <table class="table table-hover">
+              
+              <thead>
+                <tr>
+                  <th><a class="page-link" href="?{% query_transform request order="id" %}">ID</a></th>
+                  <th><a class="page-link" href="?{% query_transform request order="username" %}">Username</a></th>
+                  <th><a class="page-link" href="?{% query_transform request order="first_name" %}">First Name</a></th>
+                  <th><a class="page-link" href="?{% query_transform request order="last_name" %}">Last Name</a></th>
+                  <th><a class="page-link" href="?{% query_transform request order="position__name" %}">Position</a></th>
+                  <th><a class="page-link" href="?{% query_transform request order="tasks__count" %}">Tasks</a></th>
+                </tr>
+              </thead>
+              
+              <tbody>
+                {% for worker in worker_list %}
+                  <tr> 
+                    <td>{{ worker.id }}</td>
+                    <td><a href="{% url "task_manager:worker-detail" pk=worker.id %}">{{ worker.username }}</a></td>
+                    <td>{{ worker.first_name }}</td>
+                    <td>{{ worker.last_name }}</td>
+                    <td>{{ worker.position.name }}</td>
+                    <td>{{ worker.tasks.count }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+              
+            </table>
+          </div>
+        
+          {% block pagination %}
+            {% include "includes/pagination.html" %}
+          {% endblock %}
+          
+        </div>
+      </div>
+    
+    {% else %}
+      <p>There are no workers in the Task Manager</p>
+    {% endif %}
   
   </div>
+
 {% endblock %}
