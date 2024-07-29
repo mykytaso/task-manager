@@ -24,7 +24,7 @@
   <div class="container">
     {% if task_list %}
       <div class="row">
-        <div class="col border bg-white rounded-3 ">
+        <div class="col border bg-white rounded-3">
         
           <div class="table-responsive my-3">
             <table class="table table-hover">
@@ -43,8 +43,8 @@
                 </tr>
               </thead>
             
-              {% for task in task_list %}
-                <tbody>
+              <tbody>
+                {% for task in task_list %}
                   <tr>
                     <td>{{ task.id }}</td>
                     <td><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url "task_manager:task-detail" pk=task.id %}">{{ task.name }}</a></td>
@@ -62,8 +62,8 @@
                     <td><a class="btn btn-outline-primary btn-sm" href="{% url "task_manager:task-update" pk=task.id %}">Update</a></td>
                     <td><a class="btn btn-outline-danger btn-sm" href="{% url "task_manager:task-delete" pk=task.id %}">Delete</a></td>
                   </tr>
-                </tbody>
-              {% endfor %}
+                {% endfor %}
+              </tbody>
             
             </table>
           </div>
