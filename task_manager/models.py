@@ -50,8 +50,8 @@ class Task(models.Model):
     )
 
     name = models.CharField(max_length=255, unique=True,)
-    description = models.TextField(blank=True, null=True,)
-    deadline = models.DateField(blank=True, null=True)
+    description = models.TextField(max_length=255, blank=True, null=True,)
+    deadline = models.DateField()
     is_completed = models.BooleanField(
         default=False,
         choices=IS_COMPLETED_CHOICES,
@@ -64,7 +64,11 @@ class Task(models.Model):
         TaskType,
         on_delete=models.CASCADE,
     )
-    assignees = models.ManyToManyField(Worker, related_name="tasks", blank=True)
+    assignees = models.ManyToManyField(
+        Worker,
+        related_name="tasks",
+        blank=True
+    )
 
     def __str__(self: Task) -> str:
         return (f"{self.name} (Type: {self.task_type}, "
