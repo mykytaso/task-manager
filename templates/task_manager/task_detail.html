@@ -37,6 +37,9 @@
                     <tr>
                       <td><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-medium" href="{% url "task_manager:worker-detail" pk=worker.id %}">{{ worker.username }}</a></td>
                       <td class="text-danger"><i class="bi bi-x-circle-fill"></i></td>
+                      
+{#                      <td><a class="text-danger" href="{% url "task_manager:worker-unassign" pk=task.id worker_id=worker.id %}"><i class="bi bi-x-circle-fill"></i></a></td>#}
+                    
                     </tr>
                   {% endfor %}
                 </tbody>
