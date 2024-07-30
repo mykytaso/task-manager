@@ -2,11 +2,28 @@
 {% load crispy_forms_filters %}
 
 {% block content %}
-  <h1>{{ object|yesno:"Update,Create" }} Position</h1>
-  <form action="" method="post" novalidate>
-    {% csrf_token %}
+  
+  <div class="container">
+  
+    <div class="row justify-content-center">
+      <div class="col-auto py-5 fs-2 fw-bolder">
+        {{ object|yesno:"Edit,Create" }} Position
+      </div>
+    </div>
     
-    {{ form|crispy }}
-    <input type="submit" value="Submit" class="btn btn-primary" >
-  </form>
+    <div class="row justify-content-center">
+      <div class="col-6 fw-medium mb-5">
+        <form action="" method="post" novalidate>
+          {% csrf_token %}
+          {{ form|crispy }}
+          <div class="text-center mt-5">
+            <a class="btn btn-danger mx-3" href="{% url 'task_manager:position-list' %}">Cansel</a>
+            <input class="btn btn-primary align-items-center mx-3" type="submit" value="Submit">
+          </div>
+        </form>
+      </div>
+    </div>
+  
+  </div>
+  
 {% endblock %}
