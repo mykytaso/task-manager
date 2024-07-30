@@ -50,49 +50,9 @@
       </div>
     
     {% else %}
-      <p>There are no task types in the Task Manager</p>
+      <p>¯\_(ツ)_/¯</p>
     {% endif %}
   
   </div>
   
 {% endblock %}
-
-
-
-
-
-{#{% block content %}#}
-{#  #}
-{#  <div class="row align-items-center ">#}
-{#    <div class="col-auto fs-3 fw-bolder ">#}
-{#      Task Types#}
-{#    </div>#}
-{#    <div class="col-auto p-0">#}
-{#      <a href="{% url 'task_manager:tasktype-create' %}" class="fs-3">#}
-{#        <i class="bi bi-plus-square-fill"></i>#}
-{#      </a>#}
-{#    </div>#}
-{#  </div>#}
-{#  #}
-{#  {% if tasktype_list %}#}
-{#  <table class="table">#}
-{#    <tr>#}
-{#      <th>ID</th>#}
-{#      <th>Task Type</th>#}
-{#      <th></th>#}
-{#      <th></th>#}
-{#    </tr>#}
-{#  {% for type in tasktype_list %}#}
-{#    <tr>#}
-{#      <td>{{ type.id }}</td>#}
-{#      <td>{{ type.name }}</td>#}
-{#      <td><a href="{% url "task_manager:tasktype-update" pk=type.id %}">Update</a></td>#}
-{#      <td><a href="{% url "task_manager:tasktype-delete"  pk=type.id %}">Delete</a></td>#}
-{#    </tr>#}
-{#  {% endfor %}#}
-{##}
-{#  </table>#}
-{#  {% else %}#}
-{#    <p>There are no task types in the Task Manager</p>#}
-{#  {% endif %}#}
-{#{% endblock %}#}
