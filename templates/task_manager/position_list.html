@@ -35,8 +35,8 @@
                 {% for position in position_list %}
                   <tr>
                     <td>{{ position.id }}</td>
-                    <td class="text-primary fw-medium">{{ position.name }}</td>
-                    <td><a class="btn btn-outline-primary btn-sm" href="{% url "task_manager:position-update" pk=position.id %}">Update</a></td>
+                    <td class="fw-medium">{{ position.name }}</td>
+                    <td><a class="btn btn-outline-primary btn-sm" href="{% url "task_manager:position-update" pk=position.id %}">Edit</a></td>
                     <td><a class="btn btn-outline-danger btn-sm" href="{% url "task_manager:position-delete" pk=position.id %}">Delete</a></td>
                   </tr>
                 {% endfor %}

@@ -36,8 +36,8 @@
                 {% for type in tasktype_list %}
                   <tr>
                     <td>{{ type.id }}</td>
-                    <td class="text-primary fw-medium">{{ type.name }}</td>
-                    <td><a class="btn btn-outline-primary btn-sm" href="{% url "task_manager:tasktype-update" pk=type.id %}">Update</a></td>
+                    <td class="fw-medium">{{ type.name }}</td>
+                    <td><a class="btn btn-outline-primary btn-sm" href="{% url "task_manager:tasktype-update" pk=type.id %}">Edit</a></td>
                     <td><a class="btn btn-outline-danger btn-sm" href="{% url "task_manager:tasktype-delete" pk=type.id %}">Delete</a></td>
                   </tr>
                 {% endfor %}

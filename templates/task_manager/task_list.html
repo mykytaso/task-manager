@@ -59,7 +59,7 @@
                       {% endif %}
                     </td>
                     <td>{{ task.deadline|date:"M d, Y" }}</td>
-                    <td><a class="btn btn-outline-primary btn-sm" href="{% url "task_manager:task-update" pk=task.id %}">Update</a></td>
+                    <td><a class="btn btn-outline-primary btn-sm" href="{% url "task_manager:task-update" pk=task.id %}">Edit</a></td>
                     <td><a class="btn btn-outline-danger btn-sm" href="{% url "task_manager:task-delete" pk=task.id %}">Delete</a></td>
                   </tr>
                 {% endfor %}
