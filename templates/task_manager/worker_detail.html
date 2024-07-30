@@ -1,23 +1,53 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Worker: {{ worker.username }}</h1>
-
-  <p><strong>First name:</strong> {{ worker.first_name }}</p>
-  <p><strong>Last name:</strong> {{ worker.last_name }}</p>
-  <p><strong>Position:</strong> {{ worker.position }}</p>
-
-  <div class="ml-3">
-    <h4>
-      Is working on task{{ worker.tasks.count|pluralize }}
-    </h4>
+  <div class="container">
   
-    {% for task in worker.tasks.all %}
-        <hr>
-        <p><a href="{% url "task_manager:task-detail" pk=task.id %}">{{ task.name }}</a></p>
-
-    {% empty %}
-      <p>No Tasks!</p>
-    {% endfor %}
+    <div class="row justify-content-center mt-5">
+      <div class="col-10 bg-primary text-white p-2 rounded-top-3 fs-5 fw-medium border border-bottom-0 text-center">
+        Worker: {{ worker.username }}
+      </div>
+    </div>
+  
+    <div class="row justify-content-center">
+      <div class="col-10 bg-white border border-top-0 border-bottom-0">
+      
+        <div class="row justify-content-center">
+          <div class="col-md text-start p-4">
+            <h4 class="mb-3">Info:</h4>
+            <p class="card-text"><strong>ID: </strong>{{ worker.id }}</p>
+            <p class="card-text"><strong>First Name: </strong>{{ worker.first_name }}</p>
+            <p class="card-text"><strong>Last Name: </strong>{{ worker.last_name }}</p>
+            <p class="card-text"><strong>Position: </strong>{{ worker.position.name }}</p>
+          </div>
+          <div class="col-md text-start p-4">
+            <h4>Workers:</h4>
+            <div class="table-responsive">
+              <table class="table">
+                <tbody>
+                  {% for task in worker.tasks.all %}
+                    <tr>
+                      <td><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-medium" href="{% url "task_manager:task-detail" pk=task.id %}">{{ task.name }}</a></td>
+                      <td class="text-danger"><i class="bi bi-x-circle-fill"></i></td>
+                      
+{#                      <td><a class="text-danger" href="{% url "task_manager:worker-unassign" pk=task.id worker_id=worker.id %}"><i class="bi bi-x-circle-fill"></i></a></td>#}
+                    
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="row justify-content-center mb-5">
+      <div class="col-10 bg-white p-5 rounded-bottom-3 fs-5 fw-medium border border-top-0 text-center">
+        <a href="{% url "task_manager:worker-list" %}" class="btn btn-primary">Back to Workers</a>
+      </div>
+    </div>
+  
   </div>
+  
 {% endblock %}
