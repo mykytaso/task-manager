@@ -1,8 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count
-from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy, reverse
 from django.views import generic
 
 from .forms import TaskForm, TaskSearchForm, WorkerSearchForm
@@ -147,3 +148,17 @@ class PositionUpdateView(LoginRequiredMixin, generic.UpdateView):
 class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Position
     success_url = reverse_lazy("task_manager:position-list")
+
+
+@login_required
+def unassign(request):
+    if request.method == "POST":
+        worker_id = request.POST.get("worker_id", "")
+        task_id = request.POST.get("task_id", "")
+
+        task = get_object_or_404(Task, id=task_id)
+        worker = get_object_or_404(Worker, id=worker_id)
+
+        task.assignees.remove(worker)
+
+        return redirect(reverse('task_manager:task-detail', args=[task_id]))
