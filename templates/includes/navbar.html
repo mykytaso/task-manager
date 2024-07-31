@@ -14,10 +14,10 @@
           <a class="nav-link {% if url_name == "index" %}active{% endif %}" href="{% url 'task_manager:index' %}">Dashboard</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if url_name == "worker-list" %}active{% endif %}" href="{% url 'task_manager:worker-list' %}">Workers</a>
+          <a class="nav-link {% if url_name == "task-list" %}active{% endif %}" href="{% url 'task_manager:task-list' %}">Tasks</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if url_name == "task-list" %}active{% endif %}" href="{% url 'task_manager:task-list' %}">Tasks</a>
+          <a class="nav-link {% if url_name == "worker-list" %}active{% endif %}" href="{% url 'task_manager:worker-list' %}">Workers</a>
         </li>
         <li class="nav-item">
           <a class="nav-link {% if url_name == "position-list" %}active{% endif %}" href="{% url 'task_manager:position-list' %}">Positions</a>
