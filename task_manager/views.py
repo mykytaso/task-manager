@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import generic
@@ -88,6 +88,12 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
 class TaskDetailView(LoginRequiredMixin, generic.DetailView):
     model = Task
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(TaskDetailView, self).get_context_data(**kwargs)
+        assigned_workers = context["object"].assignees.all()
+        context["not_assigned_workers"] = Worker.objects.exclude(id__in=assigned_workers.values_list('id', flat=True))
+        return context
+
 
 class TaskCreateView(LoginRequiredMixin, generic.CreateView):
     model = Task
@@ -151,7 +157,7 @@ class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 @login_required
-def unassign(request):
+def assign_unassign_worker(request):
     if request.method == "POST":
         worker_id = request.POST.get("worker_id", "")
         task_id = request.POST.get("task_id", "")
@@ -159,6 +165,10 @@ def unassign(request):
         task = get_object_or_404(Task, id=task_id)
         worker = get_object_or_404(Worker, id=worker_id)
 
-        task.assignees.remove(worker)
+        if worker in task.assignees.all():
+            task.assignees.remove(worker)
+        else:
+            task.assignees.add(worker)
 
         return redirect(reverse('task_manager:task-detail', args=[task_id]))
+    raise Http404("assign_unassign_worker view error")

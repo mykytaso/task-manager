@@ -38,20 +38,44 @@
                       <td><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-medium" href="{% url "task_manager:worker-detail" pk=worker.id %}">{{ worker.username }}</a></td>
                       
                       <td>
-                        <form method="post" action="{% url 'task_manager:unassign' %}">
+                        <form method="post" action="{% url 'task_manager:assign_unassign_worker' %}">
                           {% csrf_token %}
                           <input type="hidden" name="worker_id" value="{{ worker.id }}">
                           <input type="hidden" name="task_id" value="{{ task.id }}">
                           <button class="btn btn-link text-danger" type="submit"><i class="bi bi-x-circle-fill"></i></button>
                         </form>
                       </td>
-                    
                     </tr>
                   {% endfor %}
                 </tbody>
               </table>
             </div>
           </div>
+        
+          <div class="col-md text-start p-4">
+            <h4>Not assigned workers:</h4>
+            <div class="table-responsive">
+              <table class="table">
+                <tbody>
+                  {% for worker in not_assigned_workers %}
+                    <tr>
+                      <td><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-medium" href="{% url "task_manager:worker-detail" pk=worker.id %}">{{ worker.username }}</a></td>
+                      
+                      <td>
+                        <form method="post" action="{% url 'task_manager:assign_unassign_worker' %}">
+                          {% csrf_token %}
+                          <input type="hidden" name="worker_id" value="{{ worker.id }}">
+                          <input type="hidden" name="task_id" value="{{ task.id }}">
+                          <button class="btn btn-link text-success" type="submit"><i class="bi bi-plus-circle-fill"></i></button>
+                        </form>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        
         </div>
       </div>
     </div>
