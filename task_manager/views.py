@@ -39,7 +39,7 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
         return context
 
     def get_queryset(self):
-        order = self.request.GET.get("order", "id")
+        order = self.request.GET.get("order", "username")
         queryset = Worker.objects.select_related("position").annotate(Count("tasks")).order_by(order)
 
         form = WorkerSearchForm(self.request.GET)
@@ -67,7 +67,7 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
         return context
 
     def get_queryset(self):
-        order = self.request.GET.get("order", "id")
+        order = self.request.GET.get("order", "name")
         queryset = Task.objects.select_related(
             "priority",
             "task_type",
@@ -157,18 +157,25 @@ class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 @login_required
-def assign_unassign_worker(request):
+def assign_unassign(request):
     if request.method == "POST":
-        worker_id = request.POST.get("worker_id", "")
-        task_id = request.POST.get("task_id", "")
-
-        task = get_object_or_404(Task, id=task_id)
-        worker = get_object_or_404(Worker, id=worker_id)
+        task = get_object_or_404(
+            Task,
+            id=request.POST.get("task_id", ""),
+        )
+        worker = get_object_or_404(
+            Worker,
+            id=request.POST.get("worker_id", ""),
+        )
 
         if worker in task.assignees.all():
             task.assignees.remove(worker)
         else:
             task.assignees.add(worker)
 
-        return redirect(reverse('task_manager:task-detail', args=[task_id]))
+        if "worker" in request.get_full_path():
+            return redirect(reverse('task_manager:task-detail', args=[task.id]))
+        if "task" in request.get_full_path():
+            return redirect(reverse('task_manager:worker-detail', args=[worker.id]))
+
     raise Http404("assign_unassign_worker view error")

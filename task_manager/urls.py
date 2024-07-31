@@ -17,7 +17,7 @@ from task_manager.views import (
     PositionCreateView,
     PositionDeleteView,
     PositionUpdateView,
-    assign_unassign_worker,
+    assign_unassign,
 )
 
 urlpatterns = [
@@ -38,7 +38,8 @@ urlpatterns = [
     path("positions/create/", PositionCreateView.as_view(), name="position-create"),
     path("positions/<int:pk>/update/", PositionUpdateView.as_view(), name="position-update"),
     path("positions/<int:pk>/delete/", PositionDeleteView.as_view(), name="position-delete"),
-    path("tasks/assign_unassign_worker/", assign_unassign_worker, name="assign_unassign_worker"),
+    path("assign_unassign_worker/", assign_unassign, name="assign_unassign_worker"),
+    path("unassign_task/", assign_unassign, name="unassign_task"),
 ]
 
 app_name = "task_manager"

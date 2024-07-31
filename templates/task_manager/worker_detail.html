@@ -5,7 +5,7 @@
   
     <div class="row justify-content-center mt-5">
       <div class="col-10 bg-primary text-white p-2 rounded-top-3 fs-5 fw-medium border border-bottom-0 text-center">
-        Worker: {{ worker.username }}
+        Worker: "{{ worker.username }}"
       </div>
     </div>
   
@@ -28,9 +28,15 @@
                   {% for task in worker.tasks.all %}
                     <tr>
                       <td><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-medium" href="{% url "task_manager:task-detail" pk=task.id %}">{{ task.name }}</a></td>
-                      <td class="text-danger"><i class="bi bi-x-circle-fill"></i></td>
                       
-{#                      <td><a class="text-danger" href="{% url "task_manager:worker-unassign" pk=task.id worker_id=worker.id %}"><i class="bi bi-x-circle-fill"></i></a></td>#}
+                      <td>
+                        <form method="post" action="{% url 'task_manager:unassign_task' %}">
+                          {% csrf_token %}
+                          <input type="hidden" name="worker_id" value="{{ worker.id }}">
+                          <input type="hidden" name="task_id" value="{{ task.id }}">
+                          <button class="btn btn-link text-danger" type="submit"><i class="bi bi-x-circle-fill"></i></button>
+                        </form>
+                      </td>
                     
                     </tr>
                   {% endfor %}

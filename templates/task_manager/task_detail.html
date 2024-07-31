@@ -4,13 +4,13 @@
   <div class="container">
   
     <div class="row justify-content-center mt-5">
-      <div class="col-10 bg-primary text-white p-2 rounded-top-3 fs-5 fw-medium border border-bottom-0 text-center">
-        Task: {{ task.name }}
+      <div class="col-12 bg-primary text-white p-2 rounded-top-3 fs-5 fw-medium border border-bottom-0 text-center">
+        Task: "{{ task.name }}"
       </div>
     </div>
   
     <div class="row justify-content-center">
-      <div class="col-10 bg-white border border-top-0 border-bottom-0">
+      <div class="col-12 bg-white border border-top-0 border-bottom-0">
       
         <div class="row justify-content-center">
           <div class="col-md text-start p-4">
@@ -33,7 +33,7 @@
             <div class="table-responsive">
               <table class="table">
                 <tbody>
-                  {% for worker in task.assignees.all %}
+                  {% for worker in task.assignees.all|dictsort:"username" %}
                     <tr>
                       <td><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-medium" href="{% url "task_manager:worker-detail" pk=worker.id %}">{{ worker.username }}</a></td>
                       
@@ -57,7 +57,7 @@
             <div class="table-responsive">
               <table class="table">
                 <tbody>
-                  {% for worker in not_assigned_workers %}
+                  {% for worker in not_assigned_workers|dictsort:"username" %}
                     <tr>
                       <td><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-medium" href="{% url "task_manager:worker-detail" pk=worker.id %}">{{ worker.username }}</a></td>
                       
@@ -81,7 +81,7 @@
     </div>
   
     <div class="row justify-content-center mb-5">
-      <div class="col-10 bg-white p-5 rounded-bottom-3 fs-5 fw-medium border border-top-0 text-center">
+      <div class="col-12 bg-white p-5 rounded-bottom-3 fs-5 fw-medium border border-top-0 text-center">
         <a href="{% url "task_manager:task-list" %}" class="btn btn-primary">Back to Tasks</a>
       </div>
     </div>
