@@ -15,18 +15,17 @@
         <div class="row justify-content-center">
           <div class="col-md text-start p-4">
             <h4 class="mb-3">Info:</h4>
-            <p class="card-text"><strong>ID: </strong>{{ task.id }}</p>
-            <p class="card-text"><strong>Type: </strong>{{ task.task_type }}</p>
-            <p class="card-text"><strong>Description: </strong>{{ task.description }}</p>
-            <p class="card-text"><strong>Deadline: </strong>{{ task.deadline }}</p>
-            <p class="card-text"><strong>Priority: </strong>{{ task.priority }}</p>
-            <p class="card-text"><strong>Status: </strong>
-              {% if task.is_completed %}
-                <span style="color: green"><i class="bi bi-check-circle-fill"></i></span>
-              {% else %}
-                <span style="color: orange"><i class="bi bi-circle"></i></span>
-              {% endif %}
-            </p>
+            <p><strong>ID: </strong>{{ task.id }}</p>
+            <p><strong>Type: </strong>{{ task.task_type }}</p>
+            <p><strong>Description: </strong>{{ task.description }}</p>
+            <p><strong>Deadline: </strong>{{ task.deadline }}</p>
+            <p><strong>Priority: </strong>{{ task.priority }}</p>
+            <div class="d-flex align-items-center">
+              <strong>Status: </strong>
+              {% block task_status_switch %}
+                {% include "includes/task_status_switch.html" %}
+              {% endblock %}
+            </div>
           </div>
           <div class="col-md text-start p-4">
             <h4>Assigned workers:</h4>

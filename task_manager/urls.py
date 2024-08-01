@@ -18,6 +18,7 @@ from task_manager.views import (
     PositionDeleteView,
     PositionUpdateView,
     assign_unassign,
+    task_status_switch,
 )
 
 urlpatterns = [
@@ -40,6 +41,7 @@ urlpatterns = [
     path("positions/<int:pk>/delete/", PositionDeleteView.as_view(), name="position-delete"),
     path("assign_unassign_worker/", assign_unassign, name="assign_unassign_worker"),
     path("unassign_task/", assign_unassign, name="unassign_task"),
+    path("task_status_switch/", task_status_switch, name="task_status_switch"),
 ]
 
 app_name = "task_manager"

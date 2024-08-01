@@ -52,11 +52,9 @@
                     <td>{{ task.task_type }}</td>
                     <td>{{ task.assignees.count }}</td>
                     <td>
-                      {% if task.is_completed %}
-                        <div style="color: green"><i class="bi bi-check-circle-fill"></i></div>
-                      {% else %}
-                        <div style="color: orange"><i class="bi bi-circle"></i></div>
-                      {% endif %}
+                      {% block task_status_switch %}
+                        {% include "includes/task_status_switch.html" %}
+                      {% endblock %}
                     </td>
                     <td>{{ task.deadline|date:"M d, Y" }}</td>
                     <td><a class="btn btn-outline-primary btn-sm" href="{% url "task_manager:task-update" pk=task.id %}">Edit</a></td>

@@ -32,20 +32,21 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(WorkerListView, self).get_context_data(**kwargs)
-        username = self.request.GET.get("username", "")
+        search = self.request.GET.get("search", "")
         context["search_form"] = WorkerSearchForm(
-            initial={"username": username}
+            initial={"search": search}
         )
         return context
 
     def get_queryset(self):
         order = self.request.GET.get("order", "username")
         queryset = Worker.objects.select_related("position").annotate(Count("tasks")).order_by(order)
-
         form = WorkerSearchForm(self.request.GET)
+        print(form)
+
         if form.is_valid():
             return queryset.filter(
-                username__icontains=form.cleaned_data["username"]
+                username__icontains=form.cleaned_data["search"]
             )
         return queryset
 
@@ -60,9 +61,9 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(TaskListView, self).get_context_data(**kwargs)
-        name = self.request.GET.get("name", "")
+        search = self.request.GET.get("search", "")
         context["search_form"] = TaskSearchForm(
-            initial={"name": name}
+            initial={"search": search}
         )
         return context
 
@@ -81,7 +82,7 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
 
         form = TaskSearchForm(self.request.GET)
         if form.is_valid():
-            return queryset.filter(name__icontains=form.cleaned_data["name"])
+            return queryset.filter(name__icontains=form.cleaned_data["search"])
         return queryset
 
 
@@ -174,8 +175,20 @@ def assign_unassign(request):
             task.assignees.add(worker)
 
         if "worker" in request.get_full_path():
-            return redirect(reverse('task_manager:task-detail', args=[task.id]))
+            return redirect(reverse("task_manager:task-detail", args=[task.id]))
         if "task" in request.get_full_path():
-            return redirect(reverse('task_manager:worker-detail', args=[worker.id]))
+            return redirect(reverse("task_manager:worker-detail", args=[worker.id]))
 
     raise Http404("assign_unassign_worker view error")
+
+
+@login_required
+def task_status_switch(request):
+    if request.method == "POST":
+        current_url = request.POST.get("current_url")
+        task = get_object_or_404(Task, id=request.POST.get("task_id", ""))
+        task.is_completed = not task.is_completed
+        task.save()
+        return redirect(current_url)
+
+    raise Http404("task_status_switch view error")
