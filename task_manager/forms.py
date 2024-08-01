@@ -37,28 +37,28 @@ class TaskForm(forms.ModelForm):
 
 
 class TaskSearchForm(forms.Form):
-    name = forms.CharField(
+    search = forms.CharField(
         max_length=255,
         required=False,
         label="",
         widget=forms.TextInput(
             attrs={
-                "placeholder": "Search by task name",
                 "class": "form-control",
+                "placeholder": "Search by task name",
             }
         ),
     )
 
 
 class WorkerSearchForm(forms.Form):
-    username = forms.CharField(
+    search = forms.CharField(
         max_length=255,
         required=False,
         label="",
         widget=forms.TextInput(
             attrs={
-                "placeholder": "Search by username",
                 "class": "form-control",
+                "placeholder": "Search by username",
             }
-        )
+        ),
     )

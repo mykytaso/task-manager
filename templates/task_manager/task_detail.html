@@ -41,6 +41,7 @@
                           {% csrf_token %}
                           <input type="hidden" name="worker_id" value="{{ worker.id }}">
                           <input type="hidden" name="task_id" value="{{ task.id }}">
+                          <input type="hidden" name="current_url" value="{{ request.get_full_path }}">
                           <button class="btn btn-link text-danger" type="submit"><i class="bi bi-x-circle-fill"></i></button>
                         </form>
                       </td>
@@ -65,6 +66,7 @@
                           {% csrf_token %}
                           <input type="hidden" name="worker_id" value="{{ worker.id }}">
                           <input type="hidden" name="task_id" value="{{ task.id }}">
+                          <input type="hidden" name="current_url" value="{{ request.get_full_path }}">
                           <button class="btn btn-link text-success" type="submit"><i class="bi bi-plus-circle-fill"></i></button>
                         </form>
                       </td>

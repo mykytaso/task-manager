@@ -25,15 +25,16 @@
             <div class="table-responsive">
               <table class="table">
                 <tbody>
-                  {% for task in worker.tasks.all %}
+                  {% for task in worker.tasks.all|dictsort:"name" %}
                     <tr>
                       <td><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-medium" href="{% url "task_manager:task-detail" pk=task.id %}">{{ task.name }}</a></td>
                       
                       <td>
-                        <form method="post" action="{% url 'task_manager:unassign_task' %}">
+                        <form method="post" action="{% url 'task_manager:assign_unassign_worker' %}">
                           {% csrf_token %}
                           <input type="hidden" name="worker_id" value="{{ worker.id }}">
                           <input type="hidden" name="task_id" value="{{ task.id }}">
+                          <input type="hidden" name="current_url" value="{{ request.get_full_path }}">
                           <button class="btn btn-link text-danger" type="submit"><i class="bi bi-x-circle-fill"></i></button>
                         </form>
                       </td>
