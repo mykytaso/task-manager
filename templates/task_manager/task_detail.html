@@ -5,7 +5,7 @@
   
     <div class="row justify-content-center mt-5">
       <div class="col-12 bg-primary text-white p-2 rounded-top-3 fs-5 fw-medium border border-bottom-0 text-center">
-        Task: "{{ task.name }}"
+        <i class="bi bi-sticky-fill"></i> {{ task.name }}
       </div>
     </div>
   
@@ -34,7 +34,7 @@
                 <tbody>
                   {% for worker in task.assignees.all|dictsort:"username" %}
                     <tr>
-                      <td><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-medium" href="{% url "task_manager:worker-detail" pk=worker.id %}">{{ worker.username }}</a></td>
+                      <td><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-medium" href="{% url "task_manager:worker-detail" pk=worker.id %}"><i class="bi bi-person-fill"></i> {{ worker.username }}</a></td>
                       
                       <td>
                         <form method="post" action="{% url 'task_manager:assign_unassign_worker' %}">
@@ -59,7 +59,7 @@
                 <tbody>
                   {% for worker in not_assigned_workers|dictsort:"username" %}
                     <tr>
-                      <td><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-medium" href="{% url "task_manager:worker-detail" pk=worker.id %}">{{ worker.username }}</a></td>
+                      <td><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-medium" href="{% url "task_manager:worker-detail" pk=worker.id %}"><i class="bi bi-person-fill"></i> {{ worker.username }}</a></td>
                       
                       <td>
                         <form method="post" action="{% url 'task_manager:assign_unassign_worker' %}">

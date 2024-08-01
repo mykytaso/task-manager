@@ -5,7 +5,7 @@
   
     <div class="row justify-content-center mt-5">
       <div class="col-10 bg-primary text-white p-2 rounded-top-3 fs-5 fw-medium border border-bottom-0 text-center">
-        Worker: "{{ worker.username }}"
+        <i class="bi bi-person-fill"></i> {{ worker.username }}
       </div>
     </div>
   
@@ -27,7 +27,7 @@
                 <tbody>
                   {% for task in worker.tasks.all|dictsort:"name" %}
                     <tr>
-                      <td><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-medium" href="{% url "task_manager:task-detail" pk=task.id %}">{{ task.name }}</a></td>
+                      <td><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-medium" href="{% url "task_manager:task-detail" pk=task.id %}"><i class="bi bi-sticky-fill"></i> {{ task.name }}</a></td>
                       
                       <td>
                         <form method="post" action="{% url 'task_manager:assign_unassign_worker' %}">
