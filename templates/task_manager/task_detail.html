@@ -37,13 +37,9 @@
                       <td><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-medium" href="{% url "task_manager:worker-detail" pk=worker.id %}"><i class="bi bi-person-fill"></i> {{ worker.username }}</a></td>
                       
                       <td>
-                        <form method="post" action="{% url 'task_manager:assign_unassign_worker' %}">
-                          {% csrf_token %}
-                          <input type="hidden" name="worker_id" value="{{ worker.id }}">
-                          <input type="hidden" name="task_id" value="{{ task.id }}">
-                          <input type="hidden" name="current_url" value="{{ request.get_full_path }}">
-                          <button class="btn btn-link text-danger" type="submit"><i class="bi bi-x-circle-fill"></i></button>
-                        </form>
+                        {% block unassign_worker %}
+                          {% include "includes/assign_unassign_worker.html" %}
+                        {% endblock %}
                       </td>
                     </tr>
                   {% endfor %}
@@ -62,13 +58,9 @@
                       <td><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-medium" href="{% url "task_manager:worker-detail" pk=worker.id %}"><i class="bi bi-person-fill"></i> {{ worker.username }}</a></td>
                       
                       <td>
-                        <form method="post" action="{% url 'task_manager:assign_unassign_worker' %}">
-                          {% csrf_token %}
-                          <input type="hidden" name="worker_id" value="{{ worker.id }}">
-                          <input type="hidden" name="task_id" value="{{ task.id }}">
-                          <input type="hidden" name="current_url" value="{{ request.get_full_path }}">
-                          <button class="btn btn-link text-success" type="submit"><i class="bi bi-plus-circle-fill"></i></button>
-                        </form>
+                        {% block assign_worker %}
+                          {% include "includes/assign_unassign_worker.html" %}
+                        {% endblock %}
                       </td>
                     </tr>
                   {% endfor %}
