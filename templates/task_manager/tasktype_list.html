@@ -25,7 +25,8 @@
               
               <thead>
                 <tr>
-                  <th class="col-10">Type</th>
+                  <th class="col-7">Type</th>
+                  <th class="col-3 text-center" >Number of tasks</th>
                   <th class="col-1"></th>
                   <th class="col-1"></th>
                 </tr>
@@ -35,6 +36,7 @@
                 {% for type in tasktype_list %}
                   <tr>
                     <td class="fw-medium">{{ type.name }}</td>
+                    <td class="text-center">{{ type.tasks.count }}</td>
                     <td><a class="btn btn-outline-primary btn-sm" href="{% url "task_manager:tasktype-update" pk=type.id %}">Edit</a></td>
                     <td><a class="btn btn-outline-danger btn-sm" href="{% url "task_manager:tasktype-delete" pk=type.id %}">Delete</a></td>
                   </tr>
