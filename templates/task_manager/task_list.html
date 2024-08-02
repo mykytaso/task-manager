@@ -24,7 +24,7 @@
   <div class="container">
     {% if task_list %}
       <div class="row">
-        <div class="col border bg-white rounded-3">
+        <div class="col border bg-white rounded-3 p-5 pt-3 mb-5">
         
           <div class="table-responsive my-3">
             <table class="table table-hover">
@@ -34,8 +34,8 @@
                   <th><a class="page-link" href="?{% query_transform request order="name" %}">Task</a></th>
                   <th><a class="page-link" href="?{% query_transform request order="priority__importance" %}">Priority</a></th>
                   <th><a class="page-link" href="?{% query_transform request order="task_type" %}">Type</a></th>
-                  <th><a class="page-link" href="?{% query_transform request order="assignees__count" %}"><i class="bi bi-person-fill"></i></a></th>
-                  <th><a class="page-link" href="?{% query_transform request order="is_completed" %}">Status</a></th>
+                  <th class="text-center"><a class="page-link" href="?{% query_transform request order="assignees__count" %}"><i class="bi bi-person-fill"></i></a></th>
+                  <th class="text-center"><a class="page-link" href="?{% query_transform request order="is_completed" %}">Status</a></th>
                   <th><a class="page-link" href="?{% query_transform request order="deadline" %}">Deadline</a></th>
                   <th></th>
                   <th></th>
@@ -48,8 +48,8 @@
                     <td><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-medium" href="{% url "task_manager:task-detail" pk=task.id %}"><i class="bi bi-sticky-fill"></i> {{ task.name }}</a></td>
                     <td>{{ task.priority }}</td>
                     <td>{{ task.task_type }}</td>
-                    <td>{{ task.assignees.count }}</td>
-                    <td>
+                    <td class="text-center">{{ task.assignees.count }}</td>
+                    <td class="text-center">
                       {% block task_status_switch %}
                         {% include "includes/task_status_switch.html" %}
                       {% endblock %}

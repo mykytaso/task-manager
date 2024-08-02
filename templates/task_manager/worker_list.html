@@ -21,7 +21,7 @@
   <div class="container">
     {% if worker_list %}
       <div class="row">
-        <div class="col border bg-white rounded-3">
+        <div class="col border bg-white rounded-3 p-5 pt-3 mb-5">
           
           <div class="table-responsive my-3">
             <table class="table table-hover">
@@ -32,7 +32,7 @@
                   <th><a class="page-link" href="?{% query_transform request order="first_name" %}">First Name</a></th>
                   <th><a class="page-link" href="?{% query_transform request order="last_name" %}">Last Name</a></th>
                   <th><a class="page-link" href="?{% query_transform request order="position__name" %}">Position</a></th>
-                  <th><a class="page-link" href="?{% query_transform request order="tasks__count" %}">Tasks</a></th>
+                  <th class="text-center"><a class="page-link" href="?{% query_transform request order="tasks__count" %}">Tasks</a></th>
                 </tr>
               </thead>
               
@@ -43,7 +43,7 @@
                     <td>{{ worker.first_name }}</td>
                     <td>{{ worker.last_name }}</td>
                     <td>{{ worker.position.name }}</td>
-                    <td>{{ worker.tasks.count }}</td>
+                    <td class="text-center">{{ worker.tasks.count }}</td>
                   </tr>
                 {% endfor %}
               </tbody>
