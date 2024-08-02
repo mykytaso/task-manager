@@ -24,7 +24,8 @@
               
               <thead>
                 <tr>
-                  <th class="col-10">Position</th>
+                  <th class="col-7">Position</th>
+                  <th class="col-3 text-center" >Number of workers</th>
                   <th class="col-1"></th>
                   <th class="col-1"></th>
                 </tr>
@@ -34,6 +35,7 @@
                 {% for position in position_list %}
                   <tr>
                     <td class="fw-medium">{{ position.name }}</td>
+                    <td class="text-center">{{ position.workers.count }}</td>
                     <td><a class="btn btn-outline-primary btn-sm" href="{% url "task_manager:position-update" pk=position.id %}">Edit</a></td>
                     <td><a class="btn btn-outline-danger btn-sm" href="{% url "task_manager:position-delete" pk=position.id %}">Delete</a></td>
                   </tr>
