@@ -34,6 +34,7 @@ class Worker(AbstractUser):
     position = models.ForeignKey(
         Position,
         on_delete=models.CASCADE,
+        related_name="workers"
     )
 
     def __str__(self: Worker) -> str:
