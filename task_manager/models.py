@@ -60,10 +60,12 @@ class Task(models.Model):
     priority = models.ForeignKey(
         TaskPriority,
         on_delete=models.CASCADE,
+        related_name="tasks",
     )
     task_type = models.ForeignKey(
         TaskType,
         on_delete=models.CASCADE,
+        related_name="tasks",
     )
     assignees = models.ManyToManyField(
         Worker,
