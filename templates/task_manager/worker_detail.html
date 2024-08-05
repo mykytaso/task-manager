@@ -4,13 +4,13 @@
   <div class="container">
   
     <div class="row justify-content-center mt-5">
-      <div class="col-10 bg-primary text-white p-2 rounded-top-3 fs-5 fw-medium border border-bottom-0 text-center">
+      <div class="col-12 bg-primary text-white p-2 rounded-top-3 fs-5 fw-medium border border-bottom-0 text-center">
         <i class="bi bi-person-fill"></i> {{ worker.username }}
       </div>
     </div>
   
     <div class="row justify-content-center">
-      <div class="col-10 bg-white border border-top-0 border-bottom-0">
+      <div class="col-12 bg-white border border-top-0 border-bottom-0">
       
         <div class="row justify-content-start">
           <div class="col-auto text-start p-4 me-5">
@@ -29,32 +29,30 @@
                   <tr>
                     <th>Task</th>
                     <th>Deadline</th>
-                    <th>Status</th>
-                    <th>Unassign</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">Unassign</th>
                   </tr>
                 </thead>
               
                 <tbody>
-                  {% for task in worker.tasks.all|dictsort:"is_completed" %}
-{#                    {% if task.is_completed == False %}#}
+                  {% for task in worker.tasks.all|dictsort:"deadline" %}
                       <tr>
                         <td><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-medium" href="{% url "task_manager:task-detail" pk=task.id %}"><i class="bi bi-sticky-fill"></i> {{ task.name }}</a></td>
                         
-                        <td>{{ task.deadline|date:"d-m-y" }}</td>
+                        <td class="text-nowrap">{{ task.deadline|date:"d-m-y" }}</td>
                       
-                        <td>
+                        <td class="text-center">
                           {% block task_status_switch %}
                             {% include "includes/task_status_switch.html" %}
                           {% endblock %}
                         </td>
                         
-                        <td>
+                        <td class="text-center">
                           {% block unassign_worker %}
                             {% include "includes/assign_unassign_worker.html" %}
                           {% endblock %}
                         </td>
                       </tr>
-{#                    {% endif %}#}
                   {% endfor %}
                 </tbody>
               </table>
@@ -65,7 +63,7 @@
     </div>
   
     <div class="row justify-content-center mb-5">
-      <div class="col-10 bg-white p-5 rounded-bottom-3 fs-5 fw-medium border border-top-0 text-center">
+      <div class="col-12 bg-white p-5 rounded-bottom-3 fs-5 fw-medium border border-top-0 text-center">
         <a href="{% url "task_manager:worker-list" %}" class="btn btn-primary">Back to Workers</a>
       </div>
     </div>
