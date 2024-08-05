@@ -23,11 +23,11 @@ class TaskPriority(models.Model):
     importance = models.PositiveSmallIntegerField(unique=True,)
     name = models.CharField(max_length=255, unique=True,)
 
-    def __str__(self: TaskPriority) -> str:
-        return self.name
-
     class Meta:
         ordering = ["importance"]
+
+    def __str__(self: TaskPriority) -> str:
+        return self.name
 
 
 class Worker(AbstractUser):
@@ -37,11 +37,11 @@ class Worker(AbstractUser):
         related_name="workers"
     )
 
-    def __str__(self: Worker) -> str:
-        return f"{self.username} – {self.position}"
-
     def get_absolute_url(self: Worker) -> str:
         return reverse("task_manager:worker-detail", kwargs={"pk": self.pk})
+
+    def __str__(self: Worker) -> str:
+        return f"{self.username}  ({self.position})"
 
 
 class Task(models.Model):
