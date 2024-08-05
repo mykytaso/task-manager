@@ -16,11 +16,9 @@ def index(request):
     current_date = timezone.now().date()
     workers = Worker.objects.all()
     tasks = Task.objects.select_related(
-            "priority",
-            "task_type",
-        ).prefetch_related(
-            "assignees",
-        )
+        "priority",
+        "task_type",
+    ).prefetch_related("assignees",)
     num_tasks = tasks.count()
     num_finished_tasks = tasks.filter(is_completed=True).count()
     num_tasks_in_progress = tasks.filter(is_completed=False).count()
@@ -30,9 +28,15 @@ def index(request):
 
     progress = round((100 / num_tasks) * num_finished_tasks)
 
-    hot_task = tasks.filter(deadline__gte=current_date, is_completed=False).order_by("deadline").first()
+    hot_task = tasks.filter(
+        deadline__gte=current_date,
+        is_completed=False
+    ).order_by("deadline").first()
 
-    missed_deadline = tasks.filter(deadline__lt=current_date, is_completed=False).order_by("-deadline")
+    missed_deadline = tasks.filter(
+        deadline__lt=current_date,
+        is_completed=False
+    ).order_by("-deadline")
 
     context = {
         "workers": workers,
@@ -63,7 +67,9 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         order = self.request.GET.get("order", "username")
-        queryset = Worker.objects.select_related("position").annotate(Count("tasks")).order_by(order)
+        queryset = Worker.objects.select_related(
+            "position"
+        ).annotate(Count("tasks")).order_by(order)
         form = WorkerSearchForm(self.request.GET)
         if form.is_valid():
             return queryset.filter(
@@ -86,10 +92,18 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
         context["search_form"] = TaskSearchForm(
             initial={"search": search}
         )
+        order_direction = self.request.GET.get("order_direction", "asc")
+        if order_direction == "desc":
+            context["order_direction"] = "asc"
+        else:
+            context["order_direction"] = "desc"
         return context
 
     def get_queryset(self):
-        order = self.request.GET.get("order", "name")
+        order_type = self.request.GET.get("order", "name")
+        order_direction = self.request.GET.get("order_direction", "")
+        order = f"{"" if order_direction == "asc" else "-"}{order_type}"
+
         queryset = Task.objects.select_related(
             "priority",
             "task_type",
@@ -113,7 +127,9 @@ class TaskDetailView(LoginRequiredMixin, generic.DetailView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(TaskDetailView, self).get_context_data(**kwargs)
         assigned_workers = context["object"].assignees.all()
-        context["not_assigned_workers"] = Worker.objects.exclude(id__in=assigned_workers.values_list('id', flat=True))
+        context["not_assigned_workers"] = Worker.objects.exclude(
+            id__in=assigned_workers.values_list("id", flat=True)
+        )
         return context
 
 
