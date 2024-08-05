@@ -28,18 +28,75 @@
               
               <thead>
                 <tr>
-                  <th><a class="page-link" href="?{% query_transform request order="username" %}">Username</a></th>
-                  <th><a class="page-link" href="?{% query_transform request order="first_name" %}">First Name</a></th>
-                  <th><a class="page-link" href="?{% query_transform request order="last_name" %}">Last Name</a></th>
-                  <th><a class="page-link" href="?{% query_transform request order="position__name" %}">Position</a></th>
-                  <th class="text-center"><a class="page-link" href="?{% query_transform request order="tasks__count" %}">Tasks</a></th>
+                  <th>
+                    <a
+                        class="page-link"
+                        href="?{% query_transform request order="username" order_direction=order_direction %}"
+                    >
+                      Username
+                      {% if request.GET.order == 'username' %}
+                        {% include "includes/order_direction.html" %}
+                      {% endif %}
+                    </a>
+                  </th>
+                  <th>
+                    <a 
+                        class="page-link" 
+                        href="?{% query_transform request order="first_name" order_direction=order_direction %}"
+                    >
+                      First Name
+                      {% if request.GET.order == 'first_name' %}
+                        {% include "includes/order_direction.html" %}
+                      {% endif %}
+                    </a>
+                  </th>
+                  <th>
+                    <a 
+                        class="page-link" 
+                        href="?{% query_transform request order="last_name" order_direction=order_direction %}"
+                    >
+                      Last Name
+                      {% if request.GET.order == 'last_name' %}
+                        {% include "includes/order_direction.html" %}
+                      {% endif %}
+                    </a>
+                  </th>
+                  <th>
+                    <a 
+                        class="page-link" 
+                        href="?{% query_transform request order="position__name" order_direction=order_direction %}"
+                    >
+                      Position
+                      {% if request.GET.order == 'position__name' %}
+                        {% include "includes/order_direction.html" %}
+                      {% endif %}
+                    </a>
+                  </th>
+                  <th class="text-center">
+                    <a 
+                        class="page-link" 
+                        href="?{% query_transform request order="tasks__count" order_direction=order_direction %}"
+                    >
+                      Tasks
+                      {% if request.GET.order == 'tasks__count' %}
+                        {% include "includes/order_direction.html" %}
+                      {% endif %}
+                    </a>
+                  </th>
                 </tr>
               </thead>
               
               <tbody>
                 {% for worker in worker_list %}
                   <tr> 
-                    <td><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-medium" href="{% url "task_manager:worker-detail" pk=worker.id %}"><i class="bi bi-person-fill"></i> {{ worker.username }}</a></td>
+                    <td>
+                      <a 
+                          class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-medium"
+                          href="{% url "task_manager:worker-detail" pk=worker.id %}"
+                      >
+                        <i class="bi bi-person-fill"></i> {{ worker.username }}
+                      </a>
+                    </td>
                     <td>{{ worker.first_name }}</td>
                     <td>{{ worker.last_name }}</td>
                     <td>{{ worker.position.name }}</td>

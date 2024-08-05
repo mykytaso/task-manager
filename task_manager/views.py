@@ -60,16 +60,22 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(WorkerListView, self).get_context_data(**kwargs)
         search = self.request.GET.get("search", "")
-        context["search_form"] = WorkerSearchForm(
-            initial={"search": search}
-        )
+
+        context.update({
+            "search_form": WorkerSearchForm(initial={"search": search}),
+            "order_direction": "asc" if self.request.GET.get("order_direction", "") == "desc" else "desc"
+        })
         return context
 
     def get_queryset(self):
-        order = self.request.GET.get("order", "username")
+        order_type = self.request.GET.get("order", "username")
+        order_direction = self.request.GET.get("order_direction", "asc")
+        order = f"{"" if order_direction == "asc" else "-"}{order_type}"
+
         queryset = Worker.objects.select_related(
             "position"
         ).annotate(Count("tasks")).order_by(order)
+
         form = WorkerSearchForm(self.request.GET)
         if form.is_valid():
             return queryset.filter(
@@ -92,16 +98,15 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
         context["search_form"] = TaskSearchForm(
             initial={"search": search}
         )
-        order_direction = self.request.GET.get("order_direction", "asc")
-        if order_direction == "desc":
-            context["order_direction"] = "asc"
-        else:
-            context["order_direction"] = "desc"
+        context.update({
+            "search_form": TaskSearchForm(initial={"search": search}),
+            "order_direction": "asc" if self.request.GET.get("order_direction", "") == "desc" else "desc"
+        })
         return context
 
     def get_queryset(self):
         order_type = self.request.GET.get("order", "name")
-        order_direction = self.request.GET.get("order_direction", "")
+        order_direction = self.request.GET.get("order_direction", "asc")
         order = f"{"" if order_direction == "asc" else "-"}{order_type}"
 
         queryset = Task.objects.select_related(
