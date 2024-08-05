@@ -1,9 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count
-from django.http import HttpResponse, Http404
+from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views import generic
 
 from .forms import TaskForm, TaskSearchForm, WorkerSearchForm
@@ -12,16 +13,38 @@ from .models import Worker, Task, TaskType, Position
 
 @login_required
 def index(request):
-    num_workers = Worker.objects.count()
-    num_tasks = Task.objects.count()
-    num_task_types = TaskType.objects.count()
-    num_positions = Position.objects.count()
+    current_date = timezone.now().date()
+    workers = Worker.objects.all()
+    tasks = Task.objects.select_related(
+            "priority",
+            "task_type",
+        ).prefetch_related(
+            "assignees",
+        )
+    num_tasks = tasks.count()
+    num_finished_tasks = tasks.filter(is_completed=True).count()
+    num_tasks_in_progress = tasks.filter(is_completed=False).count()
+
+    task_types = TaskType.objects.all()
+    positions = Position.objects.all()
+
+    progress = round((100 / num_tasks) * num_finished_tasks)
+
+    hot_task = tasks.filter(deadline__gte=current_date, is_completed=False).order_by("deadline").first()
+
+    missed_deadline = tasks.filter(deadline__lt=current_date, is_completed=False).order_by("-deadline")
 
     context = {
-        "num_workers": num_workers,
+        "workers": workers,
+        "tasks": tasks,
         "num_tasks": num_tasks,
-        "num_task_types": num_task_types,
-        "num_positions": num_positions
+        "num_finished_tasks": num_finished_tasks,
+        "num_tasks_in_progress": num_tasks_in_progress,
+        "task_types": task_types,
+        "positions": positions,
+        "progress": progress,
+        "hot_task": hot_task,
+        "missed_deadline": missed_deadline,
     }
     return render(request, "task_manager/index.html", context=context)
 
@@ -42,8 +65,6 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
         order = self.request.GET.get("order", "username")
         queryset = Worker.objects.select_related("position").annotate(Count("tasks")).order_by(order)
         form = WorkerSearchForm(self.request.GET)
-        print(form)
-
         if form.is_valid():
             return queryset.filter(
                 username__icontains=form.cleaned_data["search"]

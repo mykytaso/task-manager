@@ -5,86 +5,126 @@
   <div class="container mt-5 mb-4">
   
     <div class="row mb-4 justify-content-center">
-     <div class="col-auto">
+      <div class="col-auto">
        <div class="display-6 fw-bolder">Dashboard</div>
-     </div>
+      </div>
     </div>
     
-    <div class="row justify-content-center">
+    <div class="row">
       
-      <div class="col-auto m-2">
-        <div class="card" style="width: 18rem;">
+      <div class="col-md mt-4">
+        <div class="card text-nowrap pb-2">
+          <div class="card-header fs-5 fw-bold">
+            <i class="bi bi-sticky-fill text-primary"></i> Tasks
+          </div>
           <div class="card-body">
-            <h5 class="card-title">Tasks</h5>
-            <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
-            
-            <table class="table table-borderless">
-{#                <thead>#}
-{#                  <tr>#}
-{#                    <th>dd</th>#}
-{#                    <th>ff</th>#}
-{#                  </tr>#}
-{#                </thead>#}
+            <table class="table table-borderless card-text">
               <tbody>
-                <tr>
-                  <td><i class="bi bi-circle text-warning"></i> Tasks in Progress:</td>
-                  <td>{{ num_tasks }}</td>
-                </tr>
-                <tr>
-                  <td><i class="bi bi-check-circle-fill text-success"></i> Finished Tasks:</td>
-                  <td>{{ num_tasks }}</td>
-                </tr>              
                 <tr>
                   <td><i class="bi bi-sticky-fill text-primary"></i> Tasks Total:</td>
                   <td>{{ num_tasks }}</td>
                 </tr>
+                <tr>
+                  <td><i class="bi bi-circle text-warning"></i> Tasks in Progress:</td>
+                  <td>{{ num_tasks_in_progress }}</td>
+                </tr>
+                <tr>
+                  <td><i class="bi bi-check-circle-fill text-success"></i> Finished Tasks:</td>
+                  <td>{{ num_finished_tasks }}</td>
+                </tr>              
               </tbody>
             </table>
-            
+            <div class="fw-bold mb-2 mt-4">Progress</div>
+            <div class="progress" role="progressbar" aria-label="Example 20px high" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="height: 20px">
+              <div class="progress-bar" style="width: {{ progress }}%">{{ progress }}%</div>
+            </div>
           </div>
         </div>
       </div>
       
-      <div class="col-auto  m-2">
-        <div class="card" style="width: 18rem;">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="#" class="card-link">Card link</a>
-            <a href="#" class="card-link">Another link</a>
+      <div class="col-md mt-4">
+        <div class="card text-nowrap pb-2">
+          <div class="card-header fs-5 fw-bold">
+            <i class="bi bi-person-fill text-primary"></i> Workers
           </div>
+          
+          <div class="card-body">
+            <table class="table table-borderless card-text">
+              <tbody>
+                <tr>
+                  <td><i class="bi bi-person-fill text-primary"></i> Number of workers:</td>
+                  <td>{{ workers.count }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+        </div>
+      </div>
+    
+      <div class="col-md mt-4">
+        <div class="card pb-2">
+            <div class="card-header fs-5 fw-bold">
+              <i class="bi bi-fire text-primary"></i> Hot unfinished task
+            </div>
+          
+          <div class="card-body">
+            <table class="table table-borderless card-text">
+              
+              <thead>
+                <tr>
+                  <th>Task</th>
+                  <th>Deadline</th>
+                </tr>
+              </thead>
+              
+              
+              <tbody>
+                <tr>
+                  <td><i class="bi bi-sticky-fill text-primary"></i>  {{ hot_task.name }}</td>
+                  <td class="text-nowrap">{{ hot_task.deadline|date:"d-m-Y" }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
         </div>
       </div>
       
-      <div class="col-auto  m-2">
-        <div class="card" style="width: 18rem;">
+      <div class="col-md mt-4">
+        <div class="card pb-2">
+            <div class="card-header fs-5 fw-bold">
+              <i class="bi bi-hourglass text-primary"></i> Missed deadline
+            </div>
+          
           <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="#" class="card-link">Card link</a>
-            <a href="#" class="card-link">Another link</a>
+            {% if missed_deadline %}
+              <table class="table card-text">
+                <thead>
+                  <tr>
+                    <th>Task</th>
+                    <th>Deadline</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for task in missed_deadline %}
+                    <tr>
+                      <td><i class="bi bi-sticky-fill text-primary"></i>  {{ task.name }}</td>
+                      <td class="text-nowrap">{{ task.deadline|date:"d-m-Y" }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            {% else %}
+              <div class="text-nowrap fw-bold text-center"><i class="bi bi-check-square-fill text-success"></i> Great Job!</div>
+            {% endif %}
           </div>
+          
         </div>
       </div>
+
       
     </div>
-    
-  
   </div>
   
-{#  #}
-{#    <h2>Dashboard</h2>#}
-{#    <p>The Task Manager has the following record counts:</p>#}
-{#    <ul>#}
-{#      <li><strong>Workers:</strong> {{ num_workers }}</li>#}
-{#      <li><strong>Positions:</strong> {{ num_positions }}</li>#}
-{#      <li><strong>Tasks:</strong> {{ num_tasks }}</li>#}
-{#      <li><strong>Task Types:</strong> {{ num_task_types }}</li>#}
-{#    </ul>#}
-{#  </div>#}
-  
-  
-
 {% endblock %}
