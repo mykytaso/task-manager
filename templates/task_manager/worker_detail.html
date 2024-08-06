@@ -6,6 +6,7 @@
     <div class="row justify-content-center mt-5">
       <div class="col-12 bg-primary text-white p-2 rounded-top-3 fs-5 fw-medium border border-bottom-0 text-center">
         <i class="bi bi-person-fill"></i> {{ worker.username }}
+        {% if user == worker %} (Me){% endif %}
       </div>
     </div>
   
@@ -20,6 +21,7 @@
             <p class="card-text"><strong>Last Name: </strong>{{ worker.last_name }}</p>
             <p class="card-text"><strong>Position: </strong>{{ worker.position.name }}</p>
           </div>
+        
           <div class="col-lg text-start p-4">
             <h4>{{ worker.username }}'s tasks:</h4>
             <div class="table-responsive">
@@ -37,16 +39,18 @@
                 <tbody>
                   {% for task in worker.tasks.all|dictsort:"deadline" %}
                       <tr>
-                        <td><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-medium" href="{% url "task_manager:task-detail" pk=task.id %}"><i class="bi bi-sticky-fill"></i> {{ task.name }}</a></td>
-                        
+                        <td>
+                          <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-medium"
+                             href="{% url "task_manager:task-detail" pk=task.id %}">
+                            <i class="bi bi-sticky-fill"></i> {{ task.name }}
+                          </a>
+                        </td>
                         <td class="text-nowrap">{{ task.deadline|date:"d-m-y" }}</td>
-                      
                         <td class="text-center">
                           {% block task_status_switch %}
                             {% include "includes/task_status_switch.html" %}
                           {% endblock %}
                         </td>
-                        
                         <td class="text-center">
                           {% block unassign_worker %}
                             {% include "includes/assign_unassign_worker.html" %}
@@ -55,9 +59,11 @@
                       </tr>
                   {% endfor %}
                 </tbody>
+              
               </table>
             </div>
           </div>
+        
         </div>
       </div>
     </div>

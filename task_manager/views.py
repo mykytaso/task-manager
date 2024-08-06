@@ -203,7 +203,6 @@ class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
 @login_required
 def assign_unassign_worker(request):
     if request.method == "POST":
-        current_url = request.POST.get("current_url")
         task = get_object_or_404(
             Task,
             id=request.POST.get("task_id", ""),
@@ -216,7 +215,7 @@ def assign_unassign_worker(request):
             task.assignees.remove(worker)
         else:
             task.assignees.add(worker)
-        return redirect(current_url)
+        return redirect(request.POST.get("current_url"))
 
     raise Http404("assign_unassign_worker view error")
 
@@ -224,10 +223,9 @@ def assign_unassign_worker(request):
 @login_required
 def task_status_switch(request):
     if request.method == "POST":
-        current_url = request.POST.get("current_url")
         task = get_object_or_404(Task, id=request.POST.get("task_id", ""))
         task.is_completed = not task.is_completed
         task.save()
-        return redirect(current_url)
+        return redirect(request.POST.get("current_url"))
 
     raise Http404("task_status_switch view error")

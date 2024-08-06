@@ -94,7 +94,8 @@
                           class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-medium"
                           href="{% url "task_manager:worker-detail" pk=worker.id %}"
                       >
-                        <i class="bi bi-person-fill"></i> {{ worker.username }}
+                        <i class="bi bi-person-fill"></i> {{ worker.username }} 
+                        {% if user == worker %} (Me){% endif %}
                       </a>
                     </td>
                     <td>{{ worker.first_name }}</td>

@@ -11,8 +11,8 @@
   
     <div class="row justify-content-center">
       <div class="col-12 bg-white border border-top-0 border-bottom-0">
-      
         <div class="row justify-content-center">
+        
           <div class="col-md text-start p-4">
             <h4 class="mb-3">Info:</h4>
             <p><strong>ID: </strong>{{ task.id }}</p>
@@ -27,6 +27,7 @@
               {% endblock %}
             </div>
           </div>
+        
           <div class="col-md text-start p-4">
             <h4>Assigned workers:</h4>
             <div class="table-responsive">
@@ -34,8 +35,13 @@
                 <tbody>
                   {% for worker in task.assignees.all|dictsort:"username" %}
                     <tr>
-                      <td><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-medium" href="{% url "task_manager:worker-detail" pk=worker.id %}"><i class="bi bi-person-fill"></i> {{ worker.username }}</a></td>
-                      
+                      <td><a
+                          class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-medium"
+                          href="{% url "task_manager:worker-detail" pk=worker.id %}">
+                        <i class="bi bi-person-fill"></i> {{ worker.username }}
+                        {% if user == worker %} (Me){% endif %}
+                      </a>
+                      </td>
                       <td>
                         {% block unassign_worker %}
                           {% include "includes/assign_unassign_worker.html" %}
@@ -55,8 +61,14 @@
                 <tbody>
                   {% for worker in not_assigned_workers|dictsort:"username" %}
                     <tr>
-                      <td><a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-medium" href="{% url "task_manager:worker-detail" pk=worker.id %}"><i class="bi bi-person-fill"></i> {{ worker.username }}</a></td>
-                      
+                      <td>
+                        <a
+                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-medium"
+                            href="{% url "task_manager:worker-detail" pk=worker.id %}">
+                          <i class="bi bi-person-fill"></i> {{ worker.username }}
+                          {% if user == worker %} (Me){% endif %}
+                        </a>
+                      </td>
                       <td>
                         {% block assign_worker %}
                           {% include "includes/assign_unassign_worker.html" %}
@@ -80,5 +92,4 @@
     </div>
   
   </div>
-  
 {% endblock %}
