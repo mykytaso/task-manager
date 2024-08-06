@@ -9,6 +9,7 @@ from django.views import generic
 
 from .forms import TaskForm, TaskSearchForm, WorkerSearchForm
 from .models import Worker, Task, TaskType, Position
+from django.db.models.functions import Lower
 
 
 @login_required
@@ -70,11 +71,12 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         order_type = self.request.GET.get("order", "username")
         order_direction = self.request.GET.get("order_direction", "asc")
-        order = f"{"" if order_direction == "asc" else "-"}{order_type}"
 
         queryset = Worker.objects.select_related(
             "position"
-        ).annotate(Count("tasks")).order_by(order)
+        ).annotate(Count("tasks")).order_by(
+            Lower(order_type).asc() if order_direction == "asc" else Lower(order_type).desc()
+        )
 
         form = WorkerSearchForm(self.request.GET)
         if form.is_valid():
@@ -107,7 +109,6 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         order_type = self.request.GET.get("order", "name")
         order_direction = self.request.GET.get("order_direction", "asc")
-        order = f"{"" if order_direction == "asc" else "-"}{order_type}"
 
         queryset = Task.objects.select_related(
             "priority",
@@ -117,7 +118,7 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
         ).annotate(
             Count("assignees")
         ).order_by(
-            order
+            Lower(order_type).asc() if order_direction == "asc" else Lower(order_type).desc()
         )
 
         form = TaskSearchForm(self.request.GET)
