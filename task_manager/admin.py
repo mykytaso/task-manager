@@ -33,7 +33,7 @@ class TaskTypeAdmin(admin.ModelAdmin):
 
 
 @admin.register(TaskPriority)
-class TaskTypeAdmin(admin.ModelAdmin):
+class TaskPriorityAdmin(admin.ModelAdmin):
     list_display = ("importance", "name",)
 
 
