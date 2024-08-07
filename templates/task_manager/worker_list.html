@@ -34,7 +34,7 @@
                         href="?{% query_transform request order="username" order_direction=order_direction %}"
                     >
                       Username
-                      {% if request.GET.order == 'username' %}
+                      {% if request.GET.order == "username" %}
                         {% include "includes/order_direction.html" %}
                       {% endif %}
                     </a>
@@ -45,7 +45,7 @@
                         href="?{% query_transform request order="first_name" order_direction=order_direction %}"
                     >
                       First Name
-                      {% if request.GET.order == 'first_name' %}
+                      {% if request.GET.order == "first_name" %}
                         {% include "includes/order_direction.html" %}
                       {% endif %}
                     </a>
@@ -56,7 +56,7 @@
                         href="?{% query_transform request order="last_name" order_direction=order_direction %}"
                     >
                       Last Name
-                      {% if request.GET.order == 'last_name' %}
+                      {% if request.GET.order == "last_name" %}
                         {% include "includes/order_direction.html" %}
                       {% endif %}
                     </a>
@@ -67,7 +67,7 @@
                         href="?{% query_transform request order="position__name" order_direction=order_direction %}"
                     >
                       Position
-                      {% if request.GET.order == 'position__name' %}
+                      {% if request.GET.order == "position__name" %}
                         {% include "includes/order_direction.html" %}
                       {% endif %}
                     </a>
@@ -78,7 +78,7 @@
                         href="?{% query_transform request order="tasks__count" order_direction=order_direction %}"
                     >
                       Tasks
-                      {% if request.GET.order == 'tasks__count' %}
+                      {% if request.GET.order == "tasks__count" %}
                         {% include "includes/order_direction.html" %}
                       {% endif %}
                     </a>

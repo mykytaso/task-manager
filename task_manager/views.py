@@ -64,7 +64,8 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
 
         context.update({
             "search_form": WorkerSearchForm(initial={"search": search}),
-            "order_direction": "asc" if self.request.GET.get("order_direction", "") == "desc" else "desc"
+            "order_direction": "asc" if self.request.GET.get(
+                "order_direction", "") == "desc" else "desc"
         })
         return context
 
@@ -75,7 +76,8 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
         queryset = Worker.objects.select_related(
             "position"
         ).annotate(Count("tasks")).order_by(
-            Lower(order_type).asc() if order_direction == "asc" else Lower(order_type).desc()
+            Lower(order_type).asc() if order_direction == "asc" else Lower(
+                order_type).desc()
         )
 
         form = WorkerSearchForm(self.request.GET)
@@ -102,7 +104,8 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
         )
         context.update({
             "search_form": TaskSearchForm(initial={"search": search}),
-            "order_direction": "asc" if self.request.GET.get("order_direction", "") == "desc" else "desc"
+            "order_direction": "asc" if self.request.GET.get(
+                "order_direction", "") == "desc" else "desc"
         })
         return context
 
@@ -118,7 +121,8 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
         ).annotate(
             Count("assignees")
         ).order_by(
-            Lower(order_type).asc() if order_direction == "asc" else Lower(order_type).desc()
+            Lower(order_type).asc() if order_direction == "asc" else Lower(
+                order_type).desc()
         )
 
         form = TaskSearchForm(self.request.GET)

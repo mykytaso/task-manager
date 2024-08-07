@@ -2,8 +2,8 @@
 
 {% if is_paginated %}
   
-  <div class="row justify-content-end m-0 p-0 ">
-    <div class="col-auto m-0 p-0 ">
+  <div class="row justify-content-end m-0 p-0">
+    <div class="col-auto m-0 p-0">
       <ul class="pagination">
 
         {% if page_obj.has_previous %}
@@ -32,27 +32,27 @@
               <a class="page-link" href="?{% query_transform request page=num %}">{{ num }}</a>
             </li>
             
-          {% elif page_obj.number == 1 and num < page_obj.number|add:'5' %}
+          {% elif page_obj.number == 1 and num < page_obj.number|add:"5" %}
               <li>
                 <a class="page-link" href="?{% query_transform request page=num %}">{{ num }}</a>
               </li>
           
-          {% elif page_obj.number == 2 and num > page_obj.number|add:'-2' and num < page_obj.number|add:'4' %}
+          {% elif page_obj.number == 2 and num > page_obj.number|add:"-2" and num < page_obj.number|add:"4" %}
               <li>
                 <a class="page-link" href="?{% query_transform request page=num %}">{{ num }}</a>
               </li>
           
-          {% elif page_obj.number == paginator.num_pages and num > page_obj.number|add:'-5' %}
+          {% elif page_obj.number == paginator.num_pages and num > page_obj.number|add:"-5" %}
               <li>
                 <a class="page-link" href="?{% query_transform request page=num %}">{{ num }}</a>
               </li>
           
-          {% elif page_obj.number == paginator.num_pages|add:'-1' and num > page_obj.number|add:'-4' %}
+          {% elif page_obj.number == paginator.num_pages|add:"-1" and num > page_obj.number|add:"-4" %}
               <li>
                 <a class="page-link" href="?{% query_transform request page=num %}">{{ num }}</a>
               </li>
 
-          {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          {% elif num > page_obj.number|add:"-3" and num < page_obj.number|add:"3" %}
               <li>
                 <a class="page-link" href="?{% query_transform request page=num %}">{{ num }}</a>
               </li>
