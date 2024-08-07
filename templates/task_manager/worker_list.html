@@ -28,7 +28,7 @@
               
               <thead>
                 <tr>
-                  <th>
+                  <th class="col-2">
                     <a
                         class="page-link"
                         href="?{% query_transform request order="username" order_direction=order_direction %}"
@@ -39,7 +39,7 @@
                       {% endif %}
                     </a>
                   </th>
-                  <th>
+                  <th class="col-2">
                     <a 
                         class="page-link" 
                         href="?{% query_transform request order="first_name" order_direction=order_direction %}"
@@ -50,7 +50,7 @@
                       {% endif %}
                     </a>
                   </th>
-                  <th>
+                  <th class="col-2">
                     <a 
                         class="page-link" 
                         href="?{% query_transform request order="last_name" order_direction=order_direction %}"
@@ -61,7 +61,7 @@
                       {% endif %}
                     </a>
                   </th>
-                  <th>
+                  <th class="col-2">
                     <a 
                         class="page-link" 
                         href="?{% query_transform request order="position__name" order_direction=order_direction %}"
@@ -72,7 +72,7 @@
                       {% endif %}
                     </a>
                   </th>
-                  <th class="text-center">
+                  <th class="col-1 text-center">
                     <a 
                         class="page-link" 
                         href="?{% query_transform request order="tasks__count" order_direction=order_direction %}"

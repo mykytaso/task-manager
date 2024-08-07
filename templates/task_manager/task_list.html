@@ -31,7 +31,7 @@
             
               <thead>
                 <tr>
-                  <th>
+                  <th class="col-4">
                     <a
                         class="page-link"
                         href="?{% query_transform request order="name" order_direction=order_direction %}"
@@ -42,7 +42,7 @@
                       {% endif %}
                     </a>
                   </th>
-                  <th>
+                  <th class="col-1">
                     <a
                         class="page-link"
                         href="?{% query_transform request order="priority__importance" order_direction=order_direction %}"
@@ -53,7 +53,7 @@
                       {% endif %}
                     </a>
                   </th>
-                  <th>
+                  <th class="col-1">
                     <a
                         class="page-link"
                         href="?{% query_transform request order="task_type" order_direction=order_direction %}"
@@ -64,7 +64,7 @@
                       {% endif %}
                     </a>
                   </th>
-                  <th class="text-center">
+                  <th class="col-1 text-center">
                     <a
                         class="page-link"
                         href="?{% query_transform request order="assignees__count" order_direction=order_direction %}"
@@ -75,7 +75,7 @@
                       {% endif %}
                     </a>
                   </th>
-                  <th class="text-center">
+                  <th class="col-1 text-center">
                     <a
                         class="page-link"
                         href="?{% query_transform request order="is_completed" order_direction=order_direction %}"
@@ -86,7 +86,7 @@
                       {% endif %}
                     </a>
                   </th>
-                  <th>
+                  <th class="col-2">
                     <a
                         class="page-link"
                         href="?{% query_transform request order="deadline" order_direction=order_direction %}"
@@ -97,8 +97,8 @@
                       {% endif %}
                     </a>
                   </th>
-                  <th></th>
-                  <th></th>
+                  <th class="col-1 text-center"></th>
+                  <th class="col-1 text-center"></th>
                 </tr>
               </thead>
             
@@ -121,11 +121,11 @@
                       {% endblock %}
                     </td>
                     <td>{{ task.deadline|date:"d-m-Y" }}</td>
-                    <td>
+                    <td class="text-center">
                       <a class="btn btn-outline-primary btn-sm" href="{% url "task_manager:task-update" pk=task.id %}">
                         Edit
                       </a></td>
-                    <td>
+                    <td class="text-center">
                       <a class="btn btn-outline-danger btn-sm" href="{% url "task_manager:task-delete" pk=task.id %}">
                         Delete
                       </a></td>
