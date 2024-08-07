@@ -27,7 +27,10 @@ def index(request):
     task_types = TaskType.objects.all()
     positions = Position.objects.all()
 
-    progress = round((100 / num_tasks) * num_finished_tasks)
+    if num_tasks > 0:
+        progress = round((100 / num_tasks) * num_finished_tasks)
+    else:
+        progress = 0
 
     hot_task = tasks.filter(
         deadline__gte=current_date,
