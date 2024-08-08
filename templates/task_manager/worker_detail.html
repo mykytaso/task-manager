@@ -24,44 +24,48 @@
         
           <div class="col-lg text-start p-4">
             <h4>{{ worker.username }}'s tasks:</h4>
-            <div class="table-responsive">
-              <table class="table">
+            {% if worker.tasks.all %}
+              <div class="table-responsive">
+                <table class="table">
+                  
+                  <thead>
+                    <tr>
+                      <th>Task</th>
+                      <th>Deadline</th>
+                      <th class="text-center">Status</th>
+                      <th class="text-center">Unassign</th>
+                    </tr>
+                  </thead>
                 
-                <thead>
-                  <tr>
-                    <th>Task</th>
-                    <th>Deadline</th>
-                    <th class="text-center">Status</th>
-                    <th class="text-center">Unassign</th>
-                  </tr>
-                </thead>
-              
-                <tbody>
-                  {% for task in worker.tasks.all|dictsort:"deadline" %}
-                      <tr>
-                        <td>
-                          <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-medium"
-                             href="{% url "task_manager:task-detail" pk=task.id %}">
-                            <i class="bi bi-sticky-fill"></i> {{ task.name }}
-                          </a>
-                        </td>
-                        <td class="text-nowrap">{{ task.deadline|date:"d-m-y" }}</td>
-                        <td class="text-center">
-                          {% block task_status_switch %}
-                            {% include "includes/task_status_switch.html" %}
-                          {% endblock %}
-                        </td>
-                        <td class="text-center">
-                          {% block unassign_worker %}
-                            {% include "includes/assign_unassign_worker.html" %}
-                          {% endblock %}
-                        </td>
-                      </tr>
-                  {% endfor %}
-                </tbody>
-              
-              </table>
-            </div>
+                  <tbody>
+                    {% for task in worker.tasks.all|dictsort:"deadline" %}
+                        <tr>
+                          <td>
+                            <a class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-medium"
+                               href="{% url "task_manager:task-detail" pk=task.id %}">
+                              <i class="bi bi-sticky-fill"></i> {{ task.name }}
+                            </a>
+                          </td>
+                          <td class="text-nowrap">{{ task.deadline|date:"d-m-y" }}</td>
+                          <td class="text-center">
+                            {% block task_status_switch %}
+                              {% include "includes/task_status_switch.html" %}
+                            {% endblock %}
+                          </td>
+                          <td class="text-center">
+                            {% block unassign_worker %}
+                              {% include "includes/assign_unassign_worker.html" %}
+                            {% endblock %}
+                          </td>
+                        </tr>
+                    {% endfor %}
+                  </tbody>
+                
+                </table>
+              </div>
+            {% else %}
+              {% include "includes/nothing_found.html" %}
+            {% endif %}
           </div>
         
         </div>
