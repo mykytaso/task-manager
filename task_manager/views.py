@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.db.models import Count
+from django.db.models.functions import Lower
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -10,7 +11,6 @@ from django.views import generic
 
 from .forms import TaskForm, TaskSearchForm, WorkerSearchForm
 from .models import Worker, Task, TaskType, Position
-from django.db.models.functions import Lower
 
 
 @login_required
