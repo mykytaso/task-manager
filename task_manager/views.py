@@ -16,17 +16,29 @@ from .models import Worker, Task, TaskType, Position
 @login_required
 def index(request):
     current_date = timezone.now().date()
-    workers = Worker.objects.all()
+    workers = Worker.objects.select_related(
+        "position",
+    ).prefetch_related(
+        "tasks",
+    )
+
     tasks = Task.objects.select_related(
         "priority",
         "task_type",
-    ).prefetch_related("assignees",)
+    ).prefetch_related(
+        "assignees",
+    )
+    task_types = TaskType.objects.prefetch_related(
+        "tasks"
+    )
+    positions = Position.objects.prefetch_related(
+        "workers"
+    )
+
     num_tasks = tasks.count()
     num_finished_tasks = tasks.filter(is_completed=True).count()
     num_tasks_in_progress = tasks.filter(is_completed=False).count()
 
-    task_types = TaskType.objects.all()
-    positions = Position.objects.all()
 
     if num_tasks > 0:
         progress = round((100 / num_tasks) * num_finished_tasks)
@@ -79,6 +91,8 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
 
         queryset = Worker.objects.select_related(
             "position"
+        ).prefetch_related(
+            "tasks"
         ).annotate(Count("tasks")).order_by(
             Lower(order_type).asc() if order_direction == "asc" else Lower(
                 order_type).desc()
@@ -187,6 +201,9 @@ class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
 class TaskTypeListView(LoginRequiredMixin, generic.ListView):
     model = TaskType
     ordering = "name"
+    queryset = TaskType.objects.prefetch_related(
+        "tasks",
+    )
 
 
 class TaskTypeCreateView(LoginRequiredMixin, generic.edit.CreateView):
@@ -209,6 +226,9 @@ class TaskTypeDeleteView(LoginRequiredMixin, generic.edit.DeleteView):
 class PositionListView(LoginRequiredMixin, generic.ListView):
     model = Position
     ordering = "name"
+    queryset = Position.objects.prefetch_related(
+        "workers"
+    )
 
 
 class PositionCreateView(LoginRequiredMixin, generic.CreateView):
