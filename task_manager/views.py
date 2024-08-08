@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
 from django.db.models import Count
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
@@ -93,6 +94,26 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
 
 class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
     model = Worker
+    queryset = Worker.objects.select_related(
+        "position",
+    ).prefetch_related(
+        "tasks",
+    )
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        """
+        Paginates tasks related to a specific worker in the worker detail view.
+        """
+
+        context = super(WorkerDetailView, self).get_context_data(**kwargs)
+        worker = kwargs.get("object")
+        per_page = 5
+        page_num = self.request.GET.get("page", 1)
+        worker_tasks = worker.tasks.all()
+        paginator = Paginator(worker_tasks, per_page=per_page)
+        context["page_obj"] = paginator.get_page(page_num)
+        context["is_paginated"] = paginator.num_pages > per_page
+        return context
 
 
 class TaskListView(LoginRequiredMixin, generic.ListView):

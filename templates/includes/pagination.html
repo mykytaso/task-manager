@@ -42,12 +42,12 @@
                 <a class="page-link" href="?{% query_transform request page=num %}">{{ num }}</a>
               </li>
           
-          {% elif page_obj.number == paginator.num_pages and num > page_obj.number|add:"-5" %}
+          {% elif page_obj.number == page_obj.paginator.num_pages and num > page_obj.number|add:"-5" %}
               <li>
                 <a class="page-link" href="?{% query_transform request page=num %}">{{ num }}</a>
               </li>
           
-          {% elif page_obj.number == paginator.num_pages|add:"-1" and num > page_obj.number|add:"-4" %}
+          {% elif page_obj.number == page_obj.paginator.num_pages|add:"-1" and num > page_obj.number|add:"-4" %}
               <li>
                 <a class="page-link" href="?{% query_transform request page=num %}">{{ num }}</a>
               </li>
@@ -67,7 +67,7 @@
             </a>
           </li>
           <li class="page-item">
-            <a class="page-link" href="?{% query_transform request page=paginator.num_pages %}">Last</a>
+            <a class="page-link" href="?{% query_transform request page=page_obj.paginator.num_pages %}">Last</a>
           </li>
         {% else %}
           <li class="page-item disabled">
