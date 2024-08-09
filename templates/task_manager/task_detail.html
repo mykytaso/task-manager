@@ -18,7 +18,7 @@
             <p><strong>ID: </strong>{{ task.id }}</p>
             <p><strong>Type: </strong>{{ task.task_type }}</p>
             <p><strong>Description: </strong>{{ task.description }}</p>
-            <p><strong>Deadline: </strong>{{ task.deadline }}</p>
+            <p><strong>Deadline: </strong>{{ task.deadline|date:"d-m-Y" }}</p>
             <p><strong>Priority: </strong>{{ task.priority }}</p>
             <div class="d-flex align-items-center">
               <strong>Status: </strong>
