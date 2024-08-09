@@ -39,7 +39,6 @@ def index(request):
     num_finished_tasks = tasks.filter(is_completed=True).count()
     num_tasks_in_progress = tasks.filter(is_completed=False).count()
 
-
     if num_tasks > 0:
         progress = round((100 / num_tasks) * num_finished_tasks)
     else:
@@ -121,12 +120,14 @@ class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
 
         context = super(WorkerDetailView, self).get_context_data(**kwargs)
         worker = kwargs.get("object")
-        per_page = 5
         page_num = self.request.GET.get("page", 1)
         worker_tasks = worker.tasks.all()
-        paginator = Paginator(worker_tasks, per_page=per_page)
-        context["page_obj"] = paginator.get_page(page_num)
-        context["is_paginated"] = paginator.num_pages > per_page
+        paginator = Paginator(worker_tasks, 5)
+
+        context.update({
+            "page_obj": paginator.get_page(page_num),
+            "is_paginated": paginator.num_pages > 1,
+        })
         return context
 
 
