@@ -111,7 +111,9 @@
                         link-underline-opacity-75-hover fw-medium"
                         href="{% url "task_manager:task-detail" pk=task.id %}"
                       >
-                      <i class="bi bi-sticky-fill"></i> {{ task.name }}</a></td>
+                      <i class="bi bi-sticky-fill"></i> {{ task.name }}
+                      </a>
+                    </td>
                     <td>{{ task.priority }}</td>
                     <td>{{ task.task_type }}</td>
                     <td class="text-center">{{ task.assignees.count }}</td>
@@ -124,11 +126,13 @@
                     <td class="text-center">
                       <a class="btn btn-outline-primary btn-sm" href="{% url "task_manager:task-update" pk=task.id %}">
                         Edit
-                      </a></td>
+                      </a>
+                    </td>
                     <td class="text-center">
                       <a class="btn btn-outline-danger btn-sm" href="{% url "task_manager:task-delete" pk=task.id %}">
                         Delete
-                      </a></td>
+                      </a>
+                    </td>
                   </tr>
                 {% endfor %}
               </tbody>

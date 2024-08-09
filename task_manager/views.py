@@ -39,6 +39,8 @@ def index(request):
     num_finished_tasks = tasks.filter(is_completed=True).count()
     num_tasks_in_progress = tasks.filter(is_completed=False).count()
 
+    unassigned_tasks = tasks.filter(assignees=None)
+
     if num_tasks > 0:
         progress = round((100 / num_tasks) * num_finished_tasks)
     else:
@@ -65,6 +67,7 @@ def index(request):
         "progress": progress,
         "hot_task": hot_task,
         "missed_deadline": missed_deadline,
+        "unassigned_tasks": unassigned_tasks,
     }
     return render(request, "task_manager/index.html", context=context)
 
