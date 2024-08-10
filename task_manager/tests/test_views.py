@@ -1,7 +1,7 @@
-from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
+from django.utils import timezone
 
 from task_manager.models import Position, Task, TaskPriority, TaskType
 
