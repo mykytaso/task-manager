@@ -43,13 +43,13 @@ def index(request):
 
     if num_tasks > 0:
         progress = round((100 / num_tasks) * num_finished_tasks)
+        hot_task = tasks.filter(
+            deadline__gte=current_date,
+            is_completed=False
+        ).order_by("deadline").first()
     else:
         progress = 0
-
-    hot_task = tasks.filter(
-        deadline__gte=current_date,
-        is_completed=False
-    ).order_by("deadline").first()
+        hot_task = None
 
     missed_deadline = tasks.filter(
         deadline__lt=current_date,

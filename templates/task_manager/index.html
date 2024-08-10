@@ -77,35 +77,41 @@
         <div class="card pb-2">
           <div class="card-header fs-5 fw-bold">
             <i class="bi bi-fire text-primary"></i> Hot unfinished task
-          </div>
+          </div>         
           <div class="card-body">
-            <table class="table table-borderless card-text">
-              <thead>
-                <tr>
-                  <th>Task</th>
-                  <th>Deadline</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <a
-                      class="link-offset-2-hover link-underline link-underline-opacity-0
-                      link-underline-opacity-75-hover fw-medium"
-                      href="{% url "task_manager:task-detail" pk=hot_task.id %}"
-                    >
-                      <i class="bi bi-sticky-fill text-primary"></i>  {{ hot_task.name }}
-                    </a>
-                  </td>
-                  <td class="">{{ hot_task.deadline|date:"d-m-Y" }}</td>
-                </tr>
-              </tbody>
-            </table>
-            <p class="card-text ps-2 text-wrap">
-              <small class="text-body-secondary">
-                Unfinished task with the nearest deadline.
-              </small>
-            </p>
+            {% if hot_task %}
+              <table class="table table-borderless card-text">
+                <thead>
+                  <tr>
+                    <th>Task</th>
+                    <th>Deadline</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <a
+                        class="link-offset-2-hover link-underline link-underline-opacity-0
+                        link-underline-opacity-75-hover fw-medium"
+                        href="{% url "task_manager:task-detail" pk=hot_task.id %}"
+                      >
+                        <i class="bi bi-sticky-fill text-primary"></i>  {{ hot_task.name }}
+                      </a>
+                    </td>
+                    <td class="">{{ hot_task.deadline|date:"d-m-Y" }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p class="card-text ps-2 text-wrap">
+                <small class="text-body-secondary">
+                  Unfinished task with the nearest deadline.
+                </small>
+              </p>
+            {% else %}
+              <div class="fw-bold text-center">
+                <i class="bi bi-check-square-fill text-success"></i> All tasks are finished!
+              </div>
+            {% endif %}
           </div>
         </div>
       </div>
