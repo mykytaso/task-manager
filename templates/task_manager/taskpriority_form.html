@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  
+  <div class="container">
+  
+    <div class="row justify-content-center">
+      <div class="col-auto py-5 fs-2 fw-bolder">
+        {{ object|yesno:"Edit,Create" }} Task Priority
+      </div>
+    </div>
+    
+    <div class="row justify-content-center">
+      <div class="col-6 fw-medium mb-5">
+        <form action="" method="post" novalidate>
+          {% csrf_token %}
+          {{ form|crispy }}
+          <div class="text-center mt-5">
+            <a class="btn btn-danger mx-3" href="{% url 'task_manager:taskpriority-list' %}">Cancel</a>
+            <input class="btn btn-primary align-items-center mx-3" type="submit" value="Submit">
+          </div>
+        </form>
+      </div>
+    </div>
+  
+  </div>
+  
+{% endblock %}

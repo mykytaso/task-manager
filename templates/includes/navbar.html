@@ -25,6 +25,9 @@
         <li class="nav-item">
           <a class="nav-link {% if url_name == "tasktype-list" %}active{% endif %}" href="{% url 'task_manager:tasktype-list' %}">Task Types</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link {% if url_name == "taskpriority-list" %}active{% endif %}" href="{% url 'task_manager:taskpriority-list' %}">Task Priorities</a>
+        </li>
       </ul>
       {% endwith %}
       

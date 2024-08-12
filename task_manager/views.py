@@ -10,7 +10,7 @@ from django.utils import timezone
 from django.views import generic
 
 from .forms import TaskForm, TaskSearchForm, WorkerSearchForm
-from .models import Worker, Task, TaskType, Position
+from .models import Worker, Task, TaskType, Position, TaskPriority
 
 
 @login_required
@@ -225,6 +225,31 @@ class TaskTypeUpdateView(LoginRequiredMixin, generic.edit.UpdateView):
 class TaskTypeDeleteView(LoginRequiredMixin, generic.edit.DeleteView):
     model = TaskType
     success_url = reverse_lazy("task_manager:tasktype-list")
+
+
+class TaskPriorityListView(LoginRequiredMixin, generic.ListView):
+    model = TaskPriority
+    ordering = "importance"
+    queryset = TaskPriority.objects.prefetch_related(
+        "tasks",
+    )
+
+
+class TaskPriorityCreateView(LoginRequiredMixin, generic.edit.CreateView):
+    model = TaskPriority
+    fields = "__all__"
+    success_url = reverse_lazy("task_manager:taskpriority-list")
+
+
+class TaskPriorityUpdateView(LoginRequiredMixin, generic.edit.UpdateView):
+    model = TaskPriority
+    fields = "__all__"
+    success_url = reverse_lazy("task_manager:taskpriority-list")
+
+
+class TaskPriorityDeleteView(LoginRequiredMixin, generic.edit.DeleteView):
+    model = TaskPriority
+    success_url = reverse_lazy("task_manager:taskpriority-list")
 
 
 class PositionListView(LoginRequiredMixin, generic.ListView):

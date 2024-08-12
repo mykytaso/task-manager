@@ -2,21 +2,25 @@ from django.urls import path
 
 from task_manager.views import (
     index,
-    WorkerListView,
-    TaskListView,
-    TaskTypeListView,
-    PositionListView,
     WorkerDetailView,
+    WorkerListView,
     TaskDetailView,
+    TaskListView,
     TaskCreateView,
     TaskUpdateView,
     TaskDeleteView,
+    TaskTypeListView,
     TaskTypeCreateView,
     TaskTypeUpdateView,
     TaskTypeDeleteView,
+    TaskPriorityListView,
+    TaskPriorityCreateView,
+    TaskPriorityUpdateView,
+    TaskPriorityDeleteView,
+    PositionListView,
     PositionCreateView,
-    PositionDeleteView,
     PositionUpdateView,
+    PositionDeleteView,
     assign_unassign_worker,
     task_status_switch,
 )
@@ -66,6 +70,22 @@ urlpatterns = [
     path("task_types/<int:pk>/delete",
          TaskTypeDeleteView.as_view(),
          name="tasktype-delete"
+         ),
+    path("task_priorities/",
+         TaskPriorityListView.as_view(),
+         name="taskpriority-list"
+         ),
+    path("task_priorities/create/",
+         TaskPriorityCreateView.as_view(),
+         name="taskpriority-create"
+         ),
+    path("task_priorities/<int:pk>/update/",
+         TaskPriorityUpdateView.as_view(),
+         name="taskpriority-update"
+         ),
+    path("task_priorities/<int:pk>/delete",
+         TaskPriorityDeleteView.as_view(),
+         name="taskpriority-delete"
          ),
 
     path("positions/",
