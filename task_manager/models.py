@@ -34,7 +34,9 @@ class Worker(AbstractUser):
     position = models.ForeignKey(
         Position,
         on_delete=models.CASCADE,
-        related_name="workers"
+        related_name="workers",
+        null=True,
+        blank=True,
     )
 
     def get_absolute_url(self: Worker) -> str:
@@ -70,7 +72,8 @@ class Task(models.Model):
     assignees = models.ManyToManyField(
         Worker,
         related_name="tasks",
-        blank=True
+        null=True,
+        blank=True,
     )
 
     def __str__(self: Task) -> str:
