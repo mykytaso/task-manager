@@ -12,7 +12,7 @@ os.environ.setdefault(
 django.setup()
 
 
-from task_manager.models import TaskType, Worker, TaskPriority, Task
+from task_manager.models import TaskType, Worker, TaskPriority, Task, Position
 
 
 def random_date_gen(start_date, end_date):
@@ -22,7 +22,7 @@ def random_date_gen(start_date, end_date):
     return random_date.strftime("%Y-%m-%d")
 
 
-def interact_with_database():
+def create_tasks():
     task_types = TaskType.objects.all()
     workers = Worker.objects.all()
     priorities = TaskPriority.objects.all()
@@ -180,7 +180,7 @@ def interact_with_database():
         task.save()
 
         random_workers = random.sample(
-            list(workers), k=random.randint(1, len(workers))
+            list(workers), k=random.randint(1, len(workers) - 6)
         )
 
         task.assignees.set(
@@ -188,5 +188,128 @@ def interact_with_database():
         )
 
 
+def create_task_priorities():
+    priorities = [
+        {"name": "Critical", "importance": 1},
+        {"name": "High", "importance": 2},
+        {"name": "Medium", "importance": 3},
+        {"name": "Low", "importance": 4},
+        {"name": "Optional", "importance": 5},
+    ]
+    for priority in priorities:
+        TaskPriority.objects.create(
+            name=priority["name"],
+            importance=priority["importance"],
+        )
+
+
+def create_task_types():
+    task_types = [
+        "Bug Fix",
+        "New Feature",
+        "Code Review",
+        "Documentation",
+        "Testing",
+        "Refactoring",
+        "Deployment",
+        "Research",
+        "Optimization",
+        "Maintenance"
+    ]
+    for task_type_name in task_types:
+        TaskType.objects.create(
+            name=task_type_name,
+        )
+
+
+def create_positions():
+    positions = [
+        "Back-end Developer",
+        "DevOps",
+        "Front-end Developer",
+        "Project Manager",
+        "QA",
+        "UI Designer",
+        "UX Designer",
+    ]
+    for position in positions:
+        Position.objects.create(name=position)
+
+
+def create_workers():
+    positions = Position.objects.all()
+    password = "1qazcde3"
+    workers_data = [
+        {
+            "username": "Biff_Tannen",
+            "first_name": "Biff",
+            "last_name": "Tannen",
+        },
+        {
+            "username": "Clara_From_1885",
+            "first_name": "Clara",
+            "last_name": "Clayton",
+        },
+        {
+            "username": "Dave_McFly",
+            "first_name": "Dave",
+            "last_name": "McFly",
+        },
+        {
+            "username": "DeLorean_the_car",
+            "first_name": "De",
+            "last_name": "Lorean",
+        },
+        {
+            "username": "Doc",
+            "first_name": "Emmett",
+            "last_name": "Brown",
+        },
+        {
+            "username": "George_McFly",
+            "first_name": "George",
+            "last_name": "McFly",
+        },
+        {
+            "username": "Jennifer_Parker",
+            "first_name": "Jennifer",
+            "last_name": "Parker",
+        },
+        {
+            "username": "Lorraine_Baines",
+            "first_name": "Lorraine",
+            "last_name": "Baines",
+        },
+        {
+            "username": "Marty_McFly",
+            "first_name": "Marty",
+            "last_name": "McFly",
+        },
+        {
+            "username": "Marvin_Berry",
+            "first_name": "Marvin",
+            "last_name": "Berry",
+        },
+        {
+            "username": "Mr_Strickland",
+            "first_name": "Mr",
+            "last_name": "Strickland",
+        },
+    ]
+
+    for worker_data in workers_data:
+        Worker.objects.create_user(
+            username=worker_data["username"],
+            password=password,
+            first_name=worker_data["first_name"],
+            last_name=worker_data["last_name"],
+            position=random.choice(positions),
+        )
+
+
 if __name__ == "__main__":
-    interact_with_database()
+    create_positions()
+    create_workers()
+    create_task_priorities()
+    create_task_types()
+    create_tasks()
