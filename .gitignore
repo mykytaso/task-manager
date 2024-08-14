@@ -6,4 +6,3 @@ db.sqlite3
 .flake8
 bootstrap-5.3.3-dist
 .DS_Store
-docs
