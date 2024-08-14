@@ -164,7 +164,7 @@ On the Tasks and Workers pages, users can sort the table by any column in both a
 
 <br>
 
-1. I wanted to use Bootstrap’s `input-group` class to combine the search field and button into a single component, but it didn’t work. I was able to achieve this only after discovering that Django forms wrap the input field in an additional `<div> </div>`.
+1. I wanted to use Bootstrap’s `input-group` class to combine the search field and button into a single component, but it didn't work. I was able to achieve this only after discovering that Django forms wrap the input field in an additional `<div> </div>`.
    <br>
    <img src="docs/images/18_Search.png" alt="drawing" width="300"/>
    
