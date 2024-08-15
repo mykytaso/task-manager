@@ -21,8 +21,8 @@ from task_manager.views import (
     PositionCreateView,
     PositionUpdateView,
     PositionDeleteView,
-    assign_unassign_worker,
-    task_status_switch,
+    TaskStatusSwitchView,
+    AssignUnassignWorkerView,
 )
 
 urlpatterns = [
@@ -87,7 +87,6 @@ urlpatterns = [
          TaskPriorityDeleteView.as_view(),
          name="taskpriority-delete"
          ),
-
     path("positions/",
          PositionListView.as_view(),
          name="position-list"
@@ -105,12 +104,12 @@ urlpatterns = [
          name="position-delete"
          ),
     path("assign_unassign_worker/",
-         assign_unassign_worker,
+         AssignUnassignWorkerView.as_view(),
          name="assign_unassign_worker"
          ),
     path("task_status_switch/",
-         task_status_switch,
-         name="task_status_switch"
+         TaskStatusSwitchView.as_view(),
+         name="task_status_switch",
          ),
 ]
 

@@ -7,7 +7,7 @@ from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views import generic
+from django.views import generic, View
 
 from .forms import TaskForm, TaskSearchForm, WorkerSearchForm
 from .models import Worker, Task, TaskType, Position, TaskPriority
@@ -277,9 +277,8 @@ class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("task_manager:position-list")
 
 
-@login_required
-def assign_unassign_worker(request):
-    if request.method == "POST":
+class AssignUnassignWorkerView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
         task = get_object_or_404(
             Task,
             id=request.POST.get("task_id", ""),
@@ -294,15 +293,16 @@ def assign_unassign_worker(request):
             task.assignees.add(worker)
         return redirect(request.POST.get("current_url"))
 
-    raise Http404("assign_unassign_worker view error")
+    def get(self, request, *args, **kwargs):
+        raise Http404("assign_unassign_worker view error")
 
 
-@login_required
-def task_status_switch(request):
-    if request.method == "POST":
+class TaskStatusSwitchView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
         task = get_object_or_404(Task, id=request.POST.get("task_id", ""))
         task.is_completed = not task.is_completed
         task.save()
         return redirect(request.POST.get("current_url"))
 
-    raise Http404("task_status_switch view error")
+    def get(self, request, *args, **kwargs):
+        raise Http404("task_status_switch view error")
