@@ -209,7 +209,7 @@ On the Tasks and Workers pages, users can sort the table by any column in both a
       
    <br><br>
 
-4. To assign and unassign workers to tasks, I created a view function called `assign_unassign_worker()`. I wanted to use this functionality on different pages (`TaskDetailView` and `WorkerDetailView`), but I needed to determine which template the function should render after assigning or unassigning a worker. I decided to pass the current template to the function through the context for rendering.
+4. To assign and unassign workers to tasks, I created a class based view called `AssignUnassignWorkerView`. I wanted to use this functionality on different pages (`TaskDetailView` and `WorkerDetailView`), but I needed to determine which template the view should render after assigning or unassigning a worker. I decided to pass the current template to the `AssignUnassignWorkerView` through the `context` for rendering.
    
    <br>html: `<input type="hidden" name="current_url" value="{{ request.get_full_path }}">`
    
