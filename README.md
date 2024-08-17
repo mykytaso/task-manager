@@ -4,6 +4,15 @@
 
 This is my first Django project, where I developed a Task Manager web application. Although it is a study project, it is fully operational and can be freely used.
 
+
+## ⚡️&nbsp; Deployment
+
+### [Task Manager Web](https://it-company-task-manager-qd3p.onrender.com)
+
+>To access the website, please use the following credentials: <br> - **Username:** Marty_McFly <br> - **Password:** 1qazcde3
+
+<br>
+
 ## 🔌 &nbsp; Installation 
 
 1. Install Python 3. 

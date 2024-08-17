@@ -123,7 +123,7 @@ class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
         context = super(WorkerDetailView, self).get_context_data(**kwargs)
         worker = kwargs.get("object")
         page_num = self.request.GET.get("page", 1)
-        worker_tasks = worker.tasks.all()
+        worker_tasks = worker.tasks.all().order_by("name")
         paginator = Paginator(worker_tasks, 5)
 
         context.update({
