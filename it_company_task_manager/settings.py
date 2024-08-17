@@ -33,6 +33,7 @@ DEBUG = os.getenv("DEBUG_VALUE") != "False"
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
+    "it-company-task-manager-qd3p.onrender.com"
 ]
 
 
