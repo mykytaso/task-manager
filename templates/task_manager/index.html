@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+
+{% block content %}
+  
+  <div class="container mt-5 mb-4 text-nowrap">
+  
+    <div class="row mb-4 justify-content-center">
+      <div class="col-auto">
+       <div class="display-6 fw-bolder">Dashboard</div>
+      </div>
+    </div>
+    
+    <div class="row">
+      
+      <div class="col-md mt-4">
+        <div class="card pb-2">
+          <div class="card-header fs-5 fw-bold">
+            <i class="bi bi-sticky-fill text-primary"></i> Tasks
+          </div>
+          <div class="card-body">
+            <table class="table table-borderless card-text">
+              <tbody>
+                <tr>
+                  <td><i class="bi bi-sticky-fill text-primary"></i> Tasks Total:</td>
+                  <td>{{ num_tasks }}</td>
+                </tr>
+                <tr>
+                  <td><i class="bi bi-circle text-warning"></i> Tasks in Progress:</td>
+                  <td>{{ num_tasks_in_progress }}</td>
+                </tr>
+                <tr>
+                  <td><i class="bi bi-check-circle-fill text-success"></i> Finished Tasks:</td>
+                  <td>{{ num_finished_tasks }}</td>
+                </tr>              
+              </tbody>
+            </table>
+            <div class="fw-bold mb-2 mt-4">Progress</div>
+            <div
+                class="progress" 
+                role="progressbar" 
+                aria-label="Example 20px high" 
+                aria-valuenow="25" 
+                aria-valuemin="0" 
+                aria-valuemax="100" 
+                style="height: 20px"
+            >
+              <div class="progress-bar" style="width: {{ progress }}%">{{ progress }}%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md mt-4">
+        <div class="card  pb-2">
+          <div class="card-header fs-5 fw-bold ">
+            <i class="bi bi-person-fill text-primary"></i> Workers
+          </div>
+          <div class="card-body">
+            <table class="table table-borderless card-text">
+              <tbody>
+                <tr>
+                  <td><i class="bi bi-person-fill text-primary"></i> Number of workers:</td>
+                  <td>{{ workers.count }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="card-text ps-2 text-wrap">
+              <small class="text-body-secondary">
+                Total number of workers in the company.
+              </small>
+            </p>
+          </div>
+        </div>
+      </div>
+    
+      <div class="col-md mt-4">
+        <div class="card pb-2">
+          <div class="card-header fs-5 fw-bold">
+            <i class="bi bi-fire text-primary"></i> Hot unfinished task
+          </div>         
+          <div class="card-body">
+            {% if hot_task %}
+              <table class="table table-borderless card-text">
+                <thead>
+                  <tr>
+                    <th>Task</th>
+                    <th>Deadline</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <a
+                        class="link-offset-2-hover link-underline link-underline-opacity-0
+                        link-underline-opacity-75-hover fw-medium"
+                        href="{% url "task_manager:task-detail" pk=hot_task.id %}"
+                      >
+                        <i class="bi bi-sticky-fill text-primary"></i>  {{ hot_task.name }}
+                      </a>
+                    </td>
+                    <td class="">{{ hot_task.deadline|date:"d-m-Y" }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p class="card-text ps-2 text-wrap">
+                <small class="text-body-secondary">
+                  Unfinished task with the nearest deadline.
+                </small>
+              </p>
+            {% else %}
+              <div class="fw-bold text-center">
+                <i class="bi bi-check-square-fill text-success"></i> All tasks are finished!
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md mt-4">
+        <div class="card pb-2">
+          <div class="card-header fs-5 fw-bold ">
+            <i class="bi bi-hourglass text-primary"></i> Missed deadline
+          </div>
+          <div class="card-body">
+            {% if missed_deadline %}
+              <table class="table card-text">
+                <thead>
+                  <tr>
+                    <th>Task</th>
+                    <th>Deadline</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for task in missed_deadline %}
+                    <tr>
+                      <td>
+                        <a
+                          class="link-offset-2-hover link-underline link-underline-opacity-0
+                          link-underline-opacity-75-hover fw-medium"
+                          href="{% url "task_manager:task-detail" pk=task.id %}"
+                        >
+                          <i class="bi bi-sticky-fill"></i> {{ task.name }}
+                        </a>
+                      </td>
+                      <td class="">{{ task.deadline|date:"d-m-Y" }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              <p class="card-text ps-2 text-wrap">
+                <small class="text-body-secondary">
+                  Unfinished tasks with missed deadlines.
+                </small>
+              </p>
+            {% else %}
+              <div class="fw-bold text-center">
+                <i class="bi bi-check-square-fill text-success"></i> Great Job!
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    
+      <div class="col-md mt-4">
+        <div class="card pb-2">
+          <div class="card-header fs-5 fw-bold">
+            <i class="bi bi-person-fill-exclamation text-primary"></i> Unassigned tasks
+          </div>
+          <div class="card-body">
+            {% if unassigned_tasks %}
+              <table class="table card-text">
+                <thead>
+                  <tr>
+                    <th>Task</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for task in unassigned_tasks %}
+                    <tr>
+                      <td>
+                        <a
+                          class="link-offset-2-hover link-underline link-underline-opacity-0
+                          link-underline-opacity-75-hover fw-medium"
+                          href="{% url "task_manager:task-detail" pk=task.id %}"
+                        >
+                          <i class="bi bi-sticky-fill"></i> {{ task.name }}
+                        </a>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              <p class="card-text ps-2 text-wrap">
+                <small class="text-body-secondary">
+                  No one was assigned to these tasks.
+                </small>
+              </p>
+            {% else %}
+              <div class="fw-bold text-center">
+                <i class="bi bi-check-square-fill text-success"></i> All tasks are assigned!
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+  
+{% endblock %}

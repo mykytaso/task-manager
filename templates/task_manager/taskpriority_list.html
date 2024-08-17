@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+  <div class="container mt-5 mb-4">
+    <div class="row align-items-center">
+      <div class="col-auto fs-3 fw-bolder p-0">
+        Task Priority
+      </div>
+      <div class="col-auto px-2">
+        <a href="{% url 'task_manager:taskpriority-create' %}" class="fs-3">
+          <i class="bi bi-plus-square-fill"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    {% if taskpriority_list %}
+      <div class="row">
+        <div class="col border bg-white rounded-3 p-5 pt-3 mb-5">
+          
+          <div class="table-responsive my-3">
+            <table class="table table-hover">
+              
+              <thead class="text-nowrap">
+                <tr>
+                  <th class="col-6">Priority</th>
+                  <th class="col-1">Importance</th>
+                  <th class="col-3 text-center" >Number of tasks</th>
+                  <th class="col-1"></th>
+                  <th class="col-1"></th>
+                </tr>
+              </thead>
+              
+              <tbody>
+                {% for priority in taskpriority_list %}
+                  <tr>
+                    <td class="fw-medium">{{ priority.name }}</td>
+                    <td class="text-center">{{ priority.importance }}</td>
+                    <td class="text-center">{{ priority.tasks.count }}</td>
+                    <td><a class="btn btn-outline-primary btn-sm" href="{% url "task_manager:taskpriority-update" pk=priority.id %}">Edit</a></td>
+                    <td><a class="btn btn-outline-danger btn-sm" href="{% url "task_manager:taskpriority-delete" pk=priority.id %}">Delete</a></td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+              
+            </table>
+          </div>
+          
+        </div>
+      </div>
+    
+    {% else %}
+      {% include "includes/nothing_found.html" %}
+    {% endif %}
+  
+  </div>
+  
+{% endblock %}

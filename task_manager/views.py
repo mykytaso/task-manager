@@ -1,0 +1,306 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
+from django.db.models import Count
+from django.db.models.functions import Lower
+from django.http import Http404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
+from django.utils import timezone
+from django.views import generic, View
+
+from .forms import TaskForm, TaskSearchForm, WorkerSearchForm
+from .models import Worker, Task, TaskType, Position, TaskPriority
+
+
+@login_required
+def index(request):
+    current_date = timezone.now().date()
+    workers = Worker.objects.select_related(
+        "position",
+    ).prefetch_related(
+        "tasks",
+    )
+
+    tasks = Task.objects.select_related(
+        "priority",
+        "task_type",
+    ).prefetch_related(
+        "assignees",
+    )
+    task_types = TaskType.objects.prefetch_related(
+        "tasks"
+    )
+    positions = Position.objects.prefetch_related(
+        "workers"
+    )
+
+    num_tasks = tasks.count()
+    num_finished_tasks = tasks.filter(is_completed=True).count()
+    num_tasks_in_progress = tasks.filter(is_completed=False).count()
+
+    unassigned_tasks = tasks.filter(assignees=None)
+
+    if num_tasks > 0:
+        progress = round((100 / num_tasks) * num_finished_tasks)
+        hot_task = tasks.filter(
+            deadline__gte=current_date,
+            is_completed=False
+        ).order_by("deadline").first()
+    else:
+        progress = 0
+        hot_task = None
+
+    missed_deadline = tasks.filter(
+        deadline__lt=current_date,
+        is_completed=False
+    ).order_by("-deadline")
+
+    context = {
+        "workers": workers,
+        "tasks": tasks,
+        "num_tasks": num_tasks,
+        "num_finished_tasks": num_finished_tasks,
+        "num_tasks_in_progress": num_tasks_in_progress,
+        "task_types": task_types,
+        "positions": positions,
+        "progress": progress,
+        "hot_task": hot_task,
+        "missed_deadline": missed_deadline,
+        "unassigned_tasks": unassigned_tasks,
+    }
+    return render(request, "task_manager/index.html", context=context)
+
+
+class WorkerListView(LoginRequiredMixin, generic.ListView):
+    model = Worker
+    paginate_by = 5
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(WorkerListView, self).get_context_data(**kwargs)
+        search = self.request.GET.get("search", "")
+
+        context.update({
+            "search_form": WorkerSearchForm(initial={"search": search}),
+            "order_direction": "asc" if self.request.GET.get(
+                "order_direction", "") == "desc" else "desc"
+        })
+        return context
+
+    def get_queryset(self):
+        order_type = self.request.GET.get("order", "username")
+        order_direction = self.request.GET.get("order_direction", "asc")
+
+        queryset = Worker.objects.select_related(
+            "position"
+        ).prefetch_related(
+            "tasks"
+        ).annotate(Count("tasks")).order_by(
+            order_type if order_direction == "asc" else "-" + order_type
+        )
+
+        form = WorkerSearchForm(self.request.GET)
+        if form.is_valid():
+            return queryset.filter(
+                username__icontains=form.cleaned_data["search"]
+            )
+        return queryset
+
+
+class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Worker
+    queryset = Worker.objects.select_related(
+        "position",
+    ).prefetch_related(
+        "tasks",
+    )
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        """
+        Paginates tasks related to a specific worker in the worker detail view.
+        """
+
+        context = super(WorkerDetailView, self).get_context_data(**kwargs)
+        worker = kwargs.get("object")
+        page_num = self.request.GET.get("page", 1)
+        worker_tasks = worker.tasks.all()
+        paginator = Paginator(worker_tasks, 5)
+
+        context.update({
+            "page_obj": paginator.get_page(page_num),
+            "is_paginated": paginator.num_pages > 1,
+        })
+        return context
+
+
+class TaskListView(LoginRequiredMixin, generic.ListView):
+    model = Task
+    paginate_by = 5
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(TaskListView, self).get_context_data(**kwargs)
+        search = self.request.GET.get("search", "")
+        context["search_form"] = TaskSearchForm(
+            initial={"search": search}
+        )
+        context.update({
+            "search_form": TaskSearchForm(initial={"search": search}),
+            "order_direction": "asc" if self.request.GET.get(
+                "order_direction", "") == "desc" else "desc"
+        })
+        return context
+
+    def get_queryset(self):
+        order_type = self.request.GET.get("order", "name")
+        order_direction = self.request.GET.get("order_direction", "asc")
+
+        queryset = Task.objects.select_related(
+            "priority",
+            "task_type",
+        ).prefetch_related(
+            "assignees",
+        ).annotate(
+            Count("assignees")
+        ).order_by(
+            order_type if order_direction == "asc" else "-" + order_type
+        )
+
+        form = TaskSearchForm(self.request.GET)
+        if form.is_valid():
+            return queryset.filter(name__icontains=form.cleaned_data["search"])
+        return queryset
+
+
+class TaskDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Task
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(TaskDetailView, self).get_context_data(**kwargs)
+        assigned_workers = context["object"].assignees.all()
+        context["not_assigned_workers"] = Worker.objects.exclude(
+            id__in=assigned_workers.values_list("id", flat=True)
+        )
+        return context
+
+
+class TaskCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Task
+    form_class = TaskForm
+    success_url = reverse_lazy("task_manager:task-list")
+
+
+class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Task
+    form_class = TaskForm
+    success_url = reverse_lazy("task_manager:task-list")
+
+
+class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Task
+    success_url = reverse_lazy("task_manager:task-list")
+
+
+class TaskTypeListView(LoginRequiredMixin, generic.ListView):
+    model = TaskType
+    ordering = "name"
+    queryset = TaskType.objects.prefetch_related(
+        "tasks",
+    )
+
+
+class TaskTypeCreateView(LoginRequiredMixin, generic.edit.CreateView):
+    model = TaskType
+    fields = "__all__"
+    success_url = reverse_lazy("task_manager:tasktype-list")
+
+
+class TaskTypeUpdateView(LoginRequiredMixin, generic.edit.UpdateView):
+    model = TaskType
+    fields = "__all__"
+    success_url = reverse_lazy("task_manager:tasktype-list")
+
+
+class TaskTypeDeleteView(LoginRequiredMixin, generic.edit.DeleteView):
+    model = TaskType
+    success_url = reverse_lazy("task_manager:tasktype-list")
+
+
+class TaskPriorityListView(LoginRequiredMixin, generic.ListView):
+    model = TaskPriority
+    ordering = "importance"
+    queryset = TaskPriority.objects.prefetch_related(
+        "tasks",
+    )
+
+
+class TaskPriorityCreateView(LoginRequiredMixin, generic.edit.CreateView):
+    model = TaskPriority
+    fields = "__all__"
+    success_url = reverse_lazy("task_manager:taskpriority-list")
+
+
+class TaskPriorityUpdateView(LoginRequiredMixin, generic.edit.UpdateView):
+    model = TaskPriority
+    fields = "__all__"
+    success_url = reverse_lazy("task_manager:taskpriority-list")
+
+
+class TaskPriorityDeleteView(LoginRequiredMixin, generic.edit.DeleteView):
+    model = TaskPriority
+    success_url = reverse_lazy("task_manager:taskpriority-list")
+
+
+class PositionListView(LoginRequiredMixin, generic.ListView):
+    model = Position
+    ordering = "name"
+    queryset = Position.objects.prefetch_related(
+        "workers"
+    )
+
+
+class PositionCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Position
+    fields = "__all__"
+    success_url = reverse_lazy("task_manager:position-list")
+
+
+class PositionUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Position
+    fields = "__all__"
+    success_url = reverse_lazy("task_manager:position-list")
+
+
+class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Position
+    success_url = reverse_lazy("task_manager:position-list")
+
+
+class AssignUnassignWorkerView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        task = get_object_or_404(
+            Task,
+            id=request.POST.get("task_id", ""),
+        )
+        worker = get_object_or_404(
+            Worker,
+            id=request.POST.get("worker_id", ""),
+        )
+        if worker in task.assignees.all():
+            task.assignees.remove(worker)
+        else:
+            task.assignees.add(worker)
+        return redirect(request.POST.get("current_url"))
+
+    def get(self, request, *args, **kwargs):
+        raise Http404("assign_unassign_worker view error")
+
+
+class TaskStatusSwitchView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        task = get_object_or_404(Task, id=request.POST.get("task_id", ""))
+        task.is_completed = not task.is_completed
+        task.save()
+        return redirect(request.POST.get("current_url"))
+
+    def get(self, request, *args, **kwargs):
+        raise Http404("task_status_switch view error")

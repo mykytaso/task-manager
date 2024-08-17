@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% load query_transform %}
+
+{% block content %}
+  
+  <div class="container mt-5 mb-4">
+    <div class="row align-items-center">
+      <div class="col-auto fs-3 fw-bolder p-0">
+        Tasks
+      </div>
+      <div class="col-auto px-2">
+        <a href="{% url 'task_manager:task-create' %}" class="fs-3">
+          <i class="bi bi-plus-square-fill"></i>
+        </a>
+      </div>
+      <div class="col-auto ms-auto p-0">
+        {% block search %}
+          {% include "includes/search.html" %}
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+  
+  <div class="container">
+    {% if task_list %}
+      <div class="row">
+        <div class="col border bg-white rounded-3 p-5 pt-3 mb-5">
+        
+          <div class="table-responsive my-3">
+            <table class="table table-hover">
+            
+              <thead class="text-nowrap">
+                <tr>
+                  <th class="col-4">
+                    <a
+                        class="page-link"
+                        href="?{% query_transform request order="name" order_direction=order_direction %}"
+                    >
+                      Task
+                      {% if request.GET.order == "name" %}
+                        {% include "includes/order_direction.html" %}
+                      {% endif %}
+                    </a>
+                  </th>
+                  <th class="col-1">
+                    <a
+                        class="page-link"
+                        href="?{% query_transform request order="priority__importance" order_direction=order_direction %}"
+                    >
+                      Priority
+                      {% if request.GET.order == "priority__importance" %}
+                        {% include "includes/order_direction.html" %}
+                      {% endif %}
+                    </a>
+                  </th>
+                  <th class="col-1">
+                    <a
+                        class="page-link"
+                        href="?{% query_transform request order="task_type" order_direction=order_direction %}"
+                    >
+                      Type
+                      {% if request.GET.order == "task_type" %}
+                        {% include "includes/order_direction.html" %}
+                      {% endif %}
+                    </a>
+                  </th>
+                  <th class="col-1 text-center">
+                    <a
+                        class="page-link"
+                        href="?{% query_transform request order="assignees__count" order_direction=order_direction %}"
+                    >
+                      <i class="bi bi-person-fill"></i>
+                      {% if request.GET.order == "assignees__count" %}
+                        {% include "includes/order_direction.html" %}
+                      {% endif %}
+                    </a>
+                  </th>
+                  <th class="col-1 text-center">
+                    <a
+                        class="page-link"
+                        href="?{% query_transform request order="is_completed" order_direction=order_direction %}"
+                    >
+                      Status
+                      {% if request.GET.order == "is_completed" %}
+                        {% include "includes/order_direction.html" %}
+                      {% endif %}
+                    </a>
+                  </th>
+                  <th class="col-2">
+                    <a
+                        class="page-link"
+                        href="?{% query_transform request order="deadline" order_direction=order_direction %}"
+                    >
+                    Deadline
+                      {% if request.GET.order == "deadline" %}
+                        {% include "includes/order_direction.html" %}
+                      {% endif %}
+                    </a>
+                  </th>
+                  <th class="col-1 text-center"></th>
+                  <th class="col-1 text-center"></th>
+                </tr>
+              </thead>
+            
+              <tbody>
+                {% for task in task_list %}
+                  <tr>
+                    <td>
+                      <a
+                        class="link-offset-2-hover link-underline link-underline-opacity-0
+                        link-underline-opacity-75-hover fw-medium"
+                        href="{% url "task_manager:task-detail" pk=task.id %}"
+                      >
+                      <i class="bi bi-sticky-fill"></i> {{ task.name }}
+                      </a>
+                    </td>
+                    <td>{{ task.priority }}</td>
+                    <td>{{ task.task_type }}</td>
+                    <td class="text-center">{{ task.assignees.count }}</td>
+                    <td class="text-center">
+                      {% block task_status_switch %}
+                        {% include "includes/task_status_switch.html" %}
+                      {% endblock %}
+                    </td>
+                    <td>{{ task.deadline|date:"d-m-Y" }}</td>
+                    <td class="text-center">
+                      <a class="btn btn-outline-primary btn-sm" href="{% url "task_manager:task-update" pk=task.id %}">
+                        Edit
+                      </a>
+                    </td>
+                    <td class="text-center">
+                      <a class="btn btn-outline-danger btn-sm" href="{% url "task_manager:task-delete" pk=task.id %}">
+                        Delete
+                      </a>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+
+            </table>
+          </div>
+        
+          {% block pagination %}
+              {% include "includes/pagination.html" %}
+          {% endblock %}
+        
+        </div>
+      </div>
+      
+    {% else %}
+      {% include "includes/nothing_found.html" %}
+    {% endif %}
+  
+  </div>
+  
+{% endblock %}
