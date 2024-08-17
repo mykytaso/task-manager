@@ -96,8 +96,7 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
         ).prefetch_related(
             "tasks"
         ).annotate(Count("tasks")).order_by(
-            Lower(order_type).asc() if order_direction == "asc" else Lower(
-                order_type).desc()
+            order_type if order_direction == "asc" else "-" + order_type
         )
 
         form = WorkerSearchForm(self.request.GET)
@@ -163,8 +162,7 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
         ).annotate(
             Count("assignees")
         ).order_by(
-            Lower(order_type).asc() if order_direction == "asc" else Lower(
-                order_type).desc()
+            order_type if order_direction == "asc" else "-" + order_type
         )
 
         form = TaskSearchForm(self.request.GET)
