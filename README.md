@@ -1,8 +1,8 @@
-# Task Tracker
+# Task Manager
 
 ## The web application designed for task management
 
-This is my first Django project, where I developed a Task Tracker web application. Although it is a study project, it is fully operational and can be freely used.
+This is my first Django project, where I developed a Task Manager web application. Although it is a study project, it is fully operational and can be freely used.
 
 
 ## ⚡️&nbsp; Deployment
@@ -19,8 +19,8 @@ This is my first Django project, where I developed a Task Tracker web applicatio
 1. Install Python 3. 
 2. Clone the repository and set up the virtual environment:
     ```shell
-    git clone https://github.com/mykyta-so/task-tracker
-    cd task-tracker
+    git clone https://github.com/mykyta-so/task-manager
+    cd task-manager
     python3 -m venv venv
     source venv/bin/activate (on macOS)
     venv\Scripts\activate (on Windows)
