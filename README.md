@@ -1,13 +1,13 @@
-# IT Company Task Manager
+# Task Tracker
 
 ## The web application designed for task management
 
-This is my first Django project, where I developed a Task Manager web application. Although it is a study project, it is fully operational and can be freely used.
+This is my first Django project, where I developed a Task Tracker web application. Although it is a study project, it is fully operational and can be freely used.
 
 
 ## ⚡️&nbsp; Deployment
 
-### [Task Manager Web](https://it-company-task-manager-qd3p.onrender.com)
+### [Task Tracker Web](https://it-company-task-manager-qd3p.onrender.com)
 >**Please note:** You might see an error due to the database being in an idle state. It usually takes up to 50 seconds for the website to start working properly.
 
 >To access the website, please use the following credentials: <br> - **Username:** Marty_McFly <br> - **Password:** 1qazcde3
@@ -19,8 +19,8 @@ This is my first Django project, where I developed a Task Manager web applicatio
 1. Install Python 3. 
 2. Clone the repository and set up the virtual environment:
     ```shell
-    git clone https://github.com/mykyta-so/it-company-task-manager
-    cd it-company-task-manager
+    git clone https://github.com/mykyta-so/task-tracker
+    cd task-tracker
     python3 -m venv venv
     source venv/bin/activate (on macOS)
     venv\Scripts\activate (on Windows)
