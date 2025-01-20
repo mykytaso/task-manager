@@ -7,7 +7,7 @@ This is my first Django project, where I developed a Task Manager web applicatio
 
 ## ⚡️&nbsp; Deployment
 
-### [Task Tracker Web](https://it-company-task-manager-qd3p.onrender.com)
+### [Task Manager](https://it-company-task-manager-qd3p.onrender.com)
 >**Please note:** You might see an error due to the database being in an idle state. It usually takes up to 50 seconds for the website to start working properly.
 
 >To access the website, please use the following credentials: <br> - **Username:** Marty_McFly <br> - **Password:** 1qazcde3
