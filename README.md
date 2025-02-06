@@ -261,4 +261,4 @@ On the Tasks and Workers pages, users can sort the table by any column in both a
 <br>
 
 ## 🖋️ &nbsp; Author
-<img src="https://github.com/mykyta-so.png" alt="@mykyta-so" width="24" height="24" valign="bottom" /> Mykyta Soloviov <a href="https://github.com/mykyta-so">@mykyta-so</a>
+<img src="https://github.com/mykytaso.png" alt="@mykytaso" width="24" height="24" valign="bottom" /> Mykyta Soloviov <a href="https://github.com/mykytaso">@mykytaso</a>
